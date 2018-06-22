@@ -26,43 +26,60 @@ var numCharacterId;
 var imgCharacterThumb;
 var imgCharacterMain;
 
-var strCharacterFolder = ("/characters/");
+var strCharacterFolder;
 var strNameFolder;
 
-
+var charNumber;
 $("#characterInput").on("click", function (event) {
     event.preventDefault();
 
     strCharacterName = $("#userInput").val();
 
     var queryURL = "http://gateway.marvel.com/v1/public/characters?name=" + strCharacterName + "&ts=1&apikey=4287eee52c27f292e44137f86910da4a&hash=3f4394a993af3110f684ed8d0f8db35d"
-
-    console.log(queryURL);
-
+    
     $.ajax({
         url: queryURL,
         method: "GET"
     }).then(function (response) {
-        console.log(response.data.results[0].name);
-        console.log(response.data.results[0].id);
-        console.log(response.data.results[0].thumbnail);
 
         imgCharacterThumb = response.data.results[0].thumbnail.path + "." + response.data.results[0].thumbnail.extension;
         numCharacterId = response.data.results[0].id;
+        strCharacterName = response.data.results[0].name;
 
-        console.log(imgCharacterThumb)
-        
-        strNameFolder = response.data.results[0].name;
 
-        database.ref(strCharacterFolder).push({
-        //database.ref(strCharacterFolder + "/" + strNameFolder).push({
+        charNumber = response.data.results[0].id;
+        console.log(response.data.results[0].id);
+        database.ref(charNumber+"/").set({
+            idNumber : numCharacterId,
             name: strCharacterName,
-            id: numCharacterId,
             thumbnail: imgCharacterThumb,
-        });
 
-        $('#testImage').html("<img src=" + imgCharacterThumb + "></img>")
+        })
+
+    })
+    // console.log(queryURL);
+
+    // $.ajax({
+    //     url: queryURL,
+    //     method: "GET"
+    // }).then(function (response) {
+
+    //     imgCharacterThumb = response.data.results[0].thumbnail.path + "." + response.data.results[0].thumbnail.extension;
+    //     numCharacterId = response.data.results[0].id;
+    //     strNameFolder = response.data.results[0].name;
+
+    //     //database.ref(strCharacterFolder).on("value", function (snapshot){
+    //         //if (snapshot.child().exists === true) {
+    //             //database.ref(strCharacterFolder).push({
+    //             database.ref(strNameFolder).push({
+    //                 name: strCharacterName,
+    //                 id: numCharacterId,
+    //                 thumbnail: imgCharacterThumb,
+    //             });
+    //     //}
+    //     //});
+        $('#testImage').html("<img style='width:300px; height:300px' src=" + imgCharacterThumb + "></img>")
 
     });
 
-});
+// });
