@@ -26,50 +26,14 @@
         </div>
 
         <!-- begin button display area -->
-        <div class="row">
-            <div class="col-xl-2 col-lg-3 col-md-4 col-6 my-2">
-                <div class="card bg-dark text-white">
-                    <img class="card-img" src="http://i.annihil.us/u/prod/marvel/i/mg/2/60/537bcaef0f6cf.jpg" alt="Card image">
-                    <div class="card-img-overlay">
-                        <p class="card-title text-uppercase font-italic">Wolverine</p>
-                    </div>
-                </div>
+            <p>
+                <button type="button" class="btn btn-secondary btn-sm" id="add-char">Add Character</button>
+            </p>
+            <div class="row" id="display-button-area">
+                
             </div>
-            <div class="col-xl-2 col-lg-3 col-md-4 col-6 my-2">
-                <div class="card bg-dark text-white">
-                    <img class="card-img" src="http://i.annihil.us/u/prod/marvel/i/mg/2/60/537bcaef0f6cf.jpg" alt="Card image">
-                    <div class="card-img-overlay">
-                        <p class="card-title text-uppercase font-italic">Wolverine</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-2 col-lg-3 col-md-4 col-6 my-2">
-                <div class="card bg-dark text-white">
-                    <img class="card-img" src="http://i.annihil.us/u/prod/marvel/i/mg/2/60/537bcaef0f6cf.jpg" alt="Card image">
-                    <div class="card-img-overlay">
-                        <p class="card-title text-uppercase font-italic">Wolverine</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-2 col-lg-3 col-md-4 col-6 my-2">
-                <div class="card bg-dark text-white">
-                    <img class="card-img" src="http://i.annihil.us/u/prod/marvel/i/mg/2/60/537bcaef0f6cf.jpg" alt="Card image">
-                    <div class="card-img-overlay">
-                        <p class="card-title text-uppercase font-italic">Wolverine</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-2 col-lg-3 col-md-4 col-6 my-2">
-                <div class="card bg-dark text-white">
-                    <img class="card-img" src="http://i.annihil.us/u/prod/marvel/i/mg/2/60/537bcaef0f6cf.jpg" alt="Card image">
-                    <div class="card-img-overlay">
-                        <p class="card-title text-uppercase font-italic">Wolverine</p>
-                    </div>
-                </div>
-            </div>
-        </div>
         <!-- end button display area -->
-        
+
         <!-- begin teamup display area -->
         <div class="mt-4" id="display-teamup">
             <div class="card">
@@ -117,6 +81,29 @@
 
         });
 
+        $("#add-char").on("click", function(event) {
+            // create image element
+            var imgChar = $("<img>");
+            // create div element to hold image
+            var divChar = $("<div>")
+            
+            // set image attributes
+            imgChar.attr({
+                // attribute-value pairs to set
+                src : "http://i.annihil.us/u/prod/marvel/i/mg/2/60/537bcaef0f6cf.jpg",
+                class : "img-thumbnail"
+            })
+            
+            // set div class
+            divChar.addClass("col-xl-2 col-lg-3 col-md-4 col-6 my-2")
+
+            // add image to div
+            divChar.append(imgChar);
+
+            // add image div to page
+            $("#display-button-area").append(divChar);
+
+        });
     </script>
 </body>
 

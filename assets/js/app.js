@@ -82,4 +82,33 @@ $("#characterInput").on("click", function (event) {
 
     });
 
+    database.ref().on("child_added", function (snapshot) {
+        
+        var snap = snapshot.val();        
+        console.log(snap.thumbnail);
+        var charImgPath = snap.thumbnail;
+
+        // create image element
+        var imgChar = $("<img>");
+        // create div element to hold image
+        var divChar = $("<div>")
+        
+        // set image attributes
+        imgChar.attr({
+            // attribute-value pairs to set
+            src : charImgPath,
+            class : "img-thumbnail",
+            title : snap.name
+        })
+        
+        // set div class
+        divChar.addClass("col-xl-2 col-lg-3 col-md-4 col-6 my-2")
+
+        // add image to div
+        divChar.append(imgChar);
+
+        // add image div to page
+        $("#display-button-area").append(divChar);
+    });
+
 // });
