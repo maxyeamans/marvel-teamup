@@ -25,10 +25,57 @@
             </div>
         </div>
 
+        <!-- begin button display area -->
+        <div class="row">
+            <div class="col-xl-2 col-lg-3 col-md-4 col-6 my-2">
+                <div class="card bg-dark text-white">
+                    <img class="card-img" src="http://i.annihil.us/u/prod/marvel/i/mg/2/60/537bcaef0f6cf.jpg" alt="Card image">
+                    <div class="card-img-overlay">
+                        <p class="card-title text-uppercase font-italic">Wolverine</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-lg-3 col-md-4 col-6 my-2">
+                <div class="card bg-dark text-white">
+                    <img class="card-img" src="http://i.annihil.us/u/prod/marvel/i/mg/2/60/537bcaef0f6cf.jpg" alt="Card image">
+                    <div class="card-img-overlay">
+                        <p class="card-title text-uppercase font-italic">Wolverine</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-lg-3 col-md-4 col-6 my-2">
+                <div class="card bg-dark text-white">
+                    <img class="card-img" src="http://i.annihil.us/u/prod/marvel/i/mg/2/60/537bcaef0f6cf.jpg" alt="Card image">
+                    <div class="card-img-overlay">
+                        <p class="card-title text-uppercase font-italic">Wolverine</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-lg-3 col-md-4 col-6 my-2">
+                <div class="card bg-dark text-white">
+                    <img class="card-img" src="http://i.annihil.us/u/prod/marvel/i/mg/2/60/537bcaef0f6cf.jpg" alt="Card image">
+                    <div class="card-img-overlay">
+                        <p class="card-title text-uppercase font-italic">Wolverine</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-lg-3 col-md-4 col-6 my-2">
+                <div class="card bg-dark text-white">
+                    <img class="card-img" src="http://i.annihil.us/u/prod/marvel/i/mg/2/60/537bcaef0f6cf.jpg" alt="Card image">
+                    <div class="card-img-overlay">
+                        <p class="card-title text-uppercase font-italic">Wolverine</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end button display area -->
+        
+        <!-- begin teamup display area -->
         <div class="mt-4" id="display-teamup">
             <div class="card">
                 <div class="card-header">
-                    Your Chosen Teamup <button type="button" class="btn btn-secondary btn-sm float-right" id="get-info">Get Info</button>
+                    Your Chosen Teamup
+                    <button type="button" class="btn btn-secondary btn-sm float-right" id="get-info">Get Info</button>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -42,26 +89,29 @@
                         </div>
                     </div>
                     <div id="display-teamup-info">
-                        <p>Wolverine and Captain America first teamed up in <span id="display-teamup-issue"></span></p>
+                        <p>Wolverine and Captain America first teamed up in
+                            <span id="display-teamup-issue"></span>
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- end teamup display area -->
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="assets/js/app.js"></script>
     <script>
-        
+
         var teamupQueryURL = "https://gateway.marvel.com/v1/public/comics?format=comic&formatType=comic&noVariants=true&dateRange=1960-01-01%2C2018-06-21&sharedAppearances=1009718%2C1009220&orderBy=focDate%2ConsaleDate&limit=1&ts=1&apikey=4287eee52c27f292e44137f86910da4a&hash=3f4394a993af3110f684ed8d0f8db35d";
-        
-        $("#get-info").on("click", function(event){
-            
+
+        $("#get-info").on("click", function (event) {
+
             $.ajax({
                 url: teamupQueryURL,
                 method: "GET"
-            }).then( function( response ){
-                console.log( response );
-                console.log( response.data.results["0"].title );
+            }).then(function (response) {
+                console.log(response);
+                console.log(response.data.results["0"].title);
                 $("#display-teamup-issue").text(response.data.results["0"].title + ".");
             });
 
