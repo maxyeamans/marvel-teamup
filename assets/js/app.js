@@ -71,7 +71,8 @@ $(document).ready(function () {
             url: queryURL,
             method: "GET",
         }).then(function (firstCharacter) {
-            console.log(firstCharacter);
+            console.log(strCharacterName)
+            console.log(firstCharacter);    
 
             imgCharacterThumb = firstCharacter.data.results[0].thumbnail.path + "." + firstCharacter.data.results[0].thumbnail.extension;
             numCharacterId = firstCharacter.data.results[0].id;
@@ -182,21 +183,21 @@ $(document).ready(function () {
                         imgCollabThumb1 = theCollab.data.results[i].thumbnail.path + "." + theCollab.data.results[i].thumbnail.extension
                         console.log(strNameLoop, strNameLoop === strCharacterName2)
                         console.log(strCollabTitle1);
+                        console.log(imgCollabThumb1);
 
                         strCollabTitle2 = theCollab.data.results[i + 1].title;
                         numCollabId2 = theCollab.data.results[i + 1].id;
                         imgCollabThumb2 = theCollab.data.results[i + 1].thumbnail.path + "." + theCollab.data.results[i + 1].thumbnail.extension
+                        console.log(strCollabTitle2);
+                        console.log(imgCollabThumb2);
+
 
                         strCollabTitle3 = theCollab.data.results[i +2].title;
                         numCollabId3 = theCollab.data.results[i + 2].id;
-                        imgCollabThumb3 = theCollab.data.results[i + 2].thumbnail.path + "." + theCollab.data.results[i +2].thumbnail.extension
+                        imgCollabThumb3 = theCollab.data.results[i + 2].thumbnail.path + "." + theCollab.data.results[i + 2].thumbnail.extension
+                        console.log(strCollabTitle3);
+                        console.log(imgCollabThumb3);
 
-
-                        var appear = function() {
-                            $("#collaborationBox").fadein();
-                          }
-                          
-                          setTimeout(appear, 2000);      
 
                         //these will be changed to the comics that show up with matching characters.
                         $('#firstNameCollab').text(strCharacterName);
