@@ -46,8 +46,17 @@ var numCollabId3;
 var imgCollabThumb3;
 
 
+//for the ajax
+var formatDate = "YYYY-MM-DD";
+var strTheDate = moment().format(formatDate);
 
 //----First Character----
+
+//stuff to fix
+// Needs an error message if character isn't found
+// The problem is that if the character is not found, the jquery becomes undefined.
+// also some characters are just not showing up: EX: Venom, Shocker, Green Goblin, Hobgoblin, She-Hulk
+
 $("#characterInput").on("click", function (event) {
     event.preventDefault();
 
@@ -122,12 +131,15 @@ $("#characterInput2").on("click", function (event) {
 
 
 //Stuff to fix:
-//Shows first character, but if second character is not found then it runs and shows only first character comics.
+//if second character is not found then it runs and shows only first character comics.
 
-//Need to input a if/then searching theCollab.data.results.characters
+
+// Maybe use a for loop to check all results and the items of names in those results, then make an if/then searching for the corresponding names. 
+// If match is true display 3 comics
+// if match is false respond with error message. 
 
 $('#fusion').on("click", function () {
-    var queryURL3 = "https://gateway.marvel.com:443/v1/public/comics?format=comic&noVariants=false&dateRange=1960-01-01%2C%202018-6-22&characters=" + numCharacterId + "&sharedAppearances=" + numCharacterId2 + "&orderBy=onsaleDate&ts=1&apikey=4287eee52c27f292e44137f86910da4a&hash=3f4394a993af3110f684ed8d0f8db35d"
+    var queryURL3 = "https://gateway.marvel.com:443/v1/public/comics?format=comic&noVariants=false&dateRange=1960-01-01%2C%202" + strTheDate + "&characters=" + numCharacterId + "&sharedAppearances=" + numCharacterId2 + "&orderBy=onsaleDate&ts=1&apikey=4287eee52c27f292e44137f86910da4a&hash=3f4394a993af3110f684ed8d0f8db35d"
     console.log(queryURL3)
 
     $.ajax({
@@ -142,17 +154,15 @@ $('#fusion').on("click", function () {
         for (i = 0; i < results.length; i++) {
             //this loops through the items array which is inside the results array
             for (k = 0; k < results[i].characters.items.length; k++) {
-                var strNameLoop = results[i].characters.items[i].name
-
-                // console.log(strNameLoop) // this spits out character names that are inside the comics. 
-                console.log(strNameLoop == strCharacterName2); //console logs the loop and sees if it's true.
+                var strNameLoop = results[i].characters.items[k].name
 
 
+    
+                console.log(strNameLoop, strNameLoop === strCharacterName2) // logs the name and sees if this is true
                 //needs code that checks if the second character name shows up. 
-
+                
 
                 //if second character's name does not show up, must show error message saying it does not. 
-
 
                 //these will be changed to the comics that show up with matching characters.
                 strCollabTitle1 = theCollab.data.results[0].title;
@@ -169,6 +179,9 @@ $('#fusion').on("click", function () {
 
 
 
+                //these will be changed to the comics that show up with matching characters.
+
+                //for now it changes just to the first 3 original comics the first character appeared in.
                 $('#comic1').html("<img style='width:300px; height:300px' src=" + imgCollabThumb1 + "></img>")
                 $('#comic2').html("<img style='width:300px; height:300px' src=" + imgCollabThumb2 + "></img>")
                 $('#comic3').html("<img style='width:300px; height:300px' src=" + imgCollabThumb3 + "></img>")
