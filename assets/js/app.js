@@ -36,7 +36,7 @@ $("#characterInput").on("click", function (event) {
     strCharacterName = $("#userInput").val();
 
     var queryURL = "http://gateway.marvel.com/v1/public/characters?name=" + strCharacterName + "&ts=1&apikey=4287eee52c27f292e44137f86910da4a&hash=3f4394a993af3110f684ed8d0f8db35d"
-    
+
     $.ajax({
         url: queryURL,
         method: "GET"
@@ -49,66 +49,67 @@ $("#characterInput").on("click", function (event) {
 
         charNumber = response.data.results[0].id;
         console.log(response.data.results[0].id);
-        database.ref(charNumber+"/").set({
-            idNumber : numCharacterId,
+        database.ref(charNumber + "/").set({
+            idNumber: numCharacterId,
             name: strCharacterName,
             thumbnail: imgCharacterThumb,
 
-        })
+        });
+    });
+});
 
+database.ref().on("child_added", function (snapshot) {
+
+    var snap = snapshot.val();
+    var charImgPath = snap.thumbnail;
+
+    // create image element
+    var imgChar = $("<img>");
+    // create div element to hold image
+    var divChar = $("<div>")
+
+    // set image attributes
+    imgChar.attr({
+        // attribute-value pairs to set
+        src: charImgPath,
+        class: "img-thumbnail inactive",
+        title: snap.name,
+        value: snap.idNumber
     })
-    // console.log(queryURL);
 
-    // $.ajax({
-    //     url: queryURL,
-    //     method: "GET"
-    // }).then(function (response) {
+    // set div class
+    divChar.addClass("col-xl-2 col-lg-3 col-md-4 col-6 my-2")
 
-    //     imgCharacterThumb = response.data.results[0].thumbnail.path + "." + response.data.results[0].thumbnail.extension;
-    //     numCharacterId = response.data.results[0].id;
-    //     strNameFolder = response.data.results[0].name;
+    // add image to div
+    divChar.append(imgChar);
 
-    //     //database.ref(strCharacterFolder).on("value", function (snapshot){
-    //         //if (snapshot.child().exists === true) {
-    //             //database.ref(strCharacterFolder).push({
-    //             database.ref(strNameFolder).push({
-    //                 name: strCharacterName,
-    //                 id: numCharacterId,
-    //                 thumbnail: imgCharacterThumb,
-    //             });
-    //     //}
-    //     //});
-        $('#testImage').html("<img style='width:300px; height:300px' src=" + imgCharacterThumb + "></img>")
+    // add image div to page
+    $("#display-button-area").append(divChar);
+});
 
-    });
+var activeElements = 0;
+$("#get-info").disabled = true;
 
-    database.ref().on("child_added", function (snapshot) {
-        
-        var snap = snapshot.val();        
-        console.log(snap.thumbnail);
-        var charImgPath = snap.thumbnail;
+$(document).on("click", ".img-thumbnail", function () {
+    if ($(this).hasClass("inactive") && activeElements < 2) {
+        $(this).addClass("active");
+        $(this).removeClass("inactive");
+        activeElements++;
+        console.log(activeElements);
+    }
+    else {
+        if ($(this).hasClass("active")) {
+            activeElements--;
+        }
+        $(this).removeClass("active");
+        $(this).addClass("inactive");
+        console.log(activeElements);
+    }
 
-        // create image element
-        var imgChar = $("<img>");
-        // create div element to hold image
-        var divChar = $("<div>")
-        
-        // set image attributes
-        imgChar.attr({
-            // attribute-value pairs to set
-            src : charImgPath,
-            class : "img-thumbnail",
-            title : snap.name
-        })
-        
-        // set div class
-        divChar.addClass("col-xl-2 col-lg-3 col-md-4 col-6 my-2")
-
-        // add image to div
-        divChar.append(imgChar);
-
-        // add image div to page
-        $("#display-button-area").append(divChar);
-    });
-
-// });
+    if (activeElements == 2) {
+        $(".inactive").css({ opacity: 0.5 });
+    }
+    else {
+        $(".inactive").css({ opacity: 1 });
+    }
+});

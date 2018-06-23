@@ -1,0 +1,7 @@
+.img-thumbnail {
+    padding: .35rem !important;
+}
+
+.active {
+    background-color: rgb(66, 115, 171);
+}
