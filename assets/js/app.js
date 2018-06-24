@@ -78,7 +78,7 @@ $(document).ready(function () {
             numCharacterId = firstCharacter.data.results[0].id;
             strCharacterName = firstCharacter.data.results[0].name;
 
-            if (typeof firstCharacter == "undefined") {
+            if (firstCharacter.data.results[0] === 0) {
                 $('#testImage').html("CANNOT FIND CHARACTER!")
 
             }
@@ -171,16 +171,17 @@ $(document).ready(function () {
 
 
 
-                    // logs the name and sees if this is true
-                    //needs code that checks if the second character name shows up. 
 
+                    
                     if (strNameLoop === strCharacterName2) {
-                        //if second character's name does not show up, must show error message saying it does not. 
 
                         //these will be changed to the comics that show up with matching characters.
                         strCollabTitle1 = theCollab.data.results[i].title;
                         numCollabId1 = theCollab.data.results[i].id;
                         imgCollabThumb1 = theCollab.data.results[i].thumbnail.path + "." + theCollab.data.results[i].thumbnail.extension
+                        
+                        
+                        // logs the name and sees if this is true
                         console.log(strNameLoop, strNameLoop === strCharacterName2)
                         console.log(strCollabTitle1);
                         console.log(imgCollabThumb1);
@@ -199,11 +200,10 @@ $(document).ready(function () {
                         console.log(imgCollabThumb3);
 
 
-                        //these will be changed to the comics that show up with matching characters.
                         $('#firstNameCollab').text(strCharacterName);
                         $('#firstNameCollab').velocity("fadeIn");
 
-                        $("#firstCharacterCollab").html("<img style='width:300px; height:300px' src=" + imgCharacterThumb + "></img>");                        $('#secondNameCollab').text(strCharacterName2);
+                        $("#firstCharacterCollab").html("<img style='width:300px; height:300px' src=" + imgCharacterThumb + "></img>");                        
                         $('#firstCharacterCollab').velocity("fadeIn");
                         
                         $('#secondNameCollab').text(strCharacterName2);
@@ -213,7 +213,6 @@ $(document).ready(function () {
                         $('#secondCharacterCollab').velocity("fadeIn");
 
 
-                        //for now it changes just to the first 3 original comics the first character appeared in.
                         $('#comic1').html("<img style='width:300px; height:300px' src=" + imgCollabThumb1 + "></img>")
                             $('#comic1').velocity("bounceIn");
 
@@ -237,6 +236,7 @@ $(document).ready(function () {
                           setTimeout(disappear, 1000);                        
                     }
 
+                        //if second character's name does not show up, must show error message saying it does not. 
 
                     else {
                         $('notFound').html("No Comics Found")
