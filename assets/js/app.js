@@ -1,3 +1,5 @@
+
+//------Firebase---------
 var config = {
     apiKey: "AIzaSyAyM37LB5h7tDTR7vlf2DHYTkCDP5b0VLc",
     authDomain: "soaring-indigo-mimes.firebaseapp.com",
@@ -7,20 +9,14 @@ var config = {
     messagingSenderId: "417609766921"
 };
 firebase.initializeApp(config);
+//-----------------------
 
+
+//-------Variables-------
 var database = firebase.database();
 
-//Firebase
-//save characters in individual files
-//example: characters folder
-//inside characters have: ID, thumbnail, image
-//have if statement to see if character is already in database, if not, create one.
 
-//Javascript:
-//have text input form check marvel database and return false if nothing is found.
-//have text input form spit out marvel data into cards
-
-
+//----Character Info----
 var strCharacterName;
 var strCharacterName2;
 
@@ -30,8 +26,8 @@ var numCharacterId2;
 var imgCharacterThumb;
 var imgCharacterThumb2;
 
-var strNameFolder;
 
+//----Comics Info-----
 var strCollabTitle1;
 var numCollabId1;
 var imgCollabThumb1;
@@ -46,19 +42,17 @@ var numCollabId3;
 var imgCollabThumb3;
 
 
-//for the ajax
+//moment js for the ajax team up link
 var formatDate = "YYYY-MM-DD";
 var strTheDate = moment().format(formatDate);
+//-----------------------
 
-
-//animation stuffset
 
 $(document).ready(function () {
 
     //----First Character----
 
     //stuff to fix
-    // Needs an error message if character isn't found
     // The problem is that if the character is not found, the jquery becomes undefined.
     // also some characters are just not showing up: EX: Venom, Shocker, Green Goblin, Hobgoblin, She-Hulk
 
@@ -71,30 +65,32 @@ $(document).ready(function () {
             url: queryURL,
             method: "GET",
         }).then(function (firstCharacter) {
-            console.log(firstCharacter)
-            console.log(firstCharacter.data.count)
 
-            imgCharacterThumb = firstCharacter.data.results[0].thumbnail.path + "." + firstCharacter.data.results[0].thumbnail.extension;
-            numCharacterId = firstCharacter.data.results[0].id;
-            strCharacterName = firstCharacter.data.results[0].name;
-
+            //If search fails
             if (firstCharacter.data.total == 0) {
-                $('#testImage').html("CANNOT FIND CHARACTER!")
+                $('#testImage').html("CANNOT FIND CHARACTER! PLACEHOLDER")
 
             }
             else {
-
+                console.log(firstCharacter)
+                console.log(firstCharacter.data.count)
+    
+                imgCharacterThumb = firstCharacter.data.results[0].thumbnail.path + "." + firstCharacter.data.results[0].thumbnail.extension;
+                numCharacterId = firstCharacter.data.results[0].id;
+                strCharacterName = firstCharacter.data.results[0].name;
+    
                 database.ref(strCharacterName + "/").set({
                     idNumber: numCharacterId,
                     name: strCharacterName,
                     thumbnail: imgCharacterThumb,
 
                 });
+            //Loads the image and then puts the velocity animations in.
                 $('#testImage').html("<img style='width:300px; height:300px' src=" + imgCharacterThumb + "></img>"),
                     $('#testImage').velocity("bounceIn");
 
                 $('#firstCharacterName').text(strCharacterName)
-                $('#firstCharacterName').velocity("bounceIn");
+                    $('#firstCharacterName').velocity("bounceIn");
             }
         });
     });
@@ -103,8 +99,6 @@ $(document).ready(function () {
     $("#characterInput2").on("click", function (event) {
         event.preventDefault();
 
-
-
         strCharacterName2 = $("#userInput2").val();
         var queryURL2 = "http://gateway.marvel.com/v1/public/characters?name=" + strCharacterName2 + "&ts=1&apikey=4287eee52c27f292e44137f86910da4a&hash=3f4394a993af3110f684ed8d0f8db35d"
 
@@ -112,23 +106,26 @@ $(document).ready(function () {
             url: queryURL2,
             method: "GET",
         }).then(function (secondCharacter) {
-            console.log(secondCharacter.data.count)
-
-            imgCharacterThumb2 = secondCharacter.data.results[0].thumbnail.path + "." + secondCharacter.data.results[0].thumbnail.extension;
-            numCharacterId2 = secondCharacter.data.results[0].id;
-            strCharacterName2 = secondCharacter.data.results[0].name;
-
+   
+            //If search fails
             if (secondCharacter.data.count == 0) {
-                $('#secondTestImage').html("CANNOT FIND CHARACTER!")
+                $('#secondTestImage').html("CANNOT FIND CHARACTER PLACEHOLDER!")
             }
             else {
+                console.log(secondCharacter.data.count)
 
+                imgCharacterThumb2 = secondCharacter.data.results[0].thumbnail.path + "." + secondCharacter.data.results[0].thumbnail.extension;
+                numCharacterId2 = secondCharacter.data.results[0].id;
+                strCharacterName2 = secondCharacter.data.results[0].name;
+    
                 database.ref(strCharacterName2 + "/").set({
                     idNumber: numCharacterId2,
                     name: strCharacterName2,
                     thumbnail: imgCharacterThumb2,
 
                 });
+
+            //Loads the image and then puts the velocity animations in.
                 $('#secondTestImage').html("<img style='width:300px; height:300px' src=" + imgCharacterThumb2 + "></img>")
                 $('#secondTestImage').velocity("bounceIn");
 
@@ -140,54 +137,51 @@ $(document).ready(function () {
 
 
     //----Collab----
-
-
-    //Stuff to fix:
-    //if second character is not found then it runs and shows only first character comics.
-
-
-    // Maybe use a for loop to check all results and the items of names in those results, then make an if/then searching for the corresponding names. 
-    // If match is true display 3 comics
-    // if match is false respond with error message. 
-
     $('#fusion').on("click", function () {
         var queryURL3 = "https://gateway.marvel.com:443/v1/public/comics?format=comic&formatType=comic&noVariants=true&dateRange=1960-01-01%2C2018-06-23&sharedAppearances=" + numCharacterId + " %2C" + numCharacterId2 + "&orderBy=focDate%2ConsaleDate&limit=3&ts=1&apikey=4287eee52c27f292e44137f86910da4a&hash=3f4394a993af3110f684ed8d0f8db35d"
 
+        //Ajax for the team up link
         console.log(queryURL3)
         $.ajax({
             url: queryURL3,
             method: "GET",
         }).then(function (theCollab) {
 
+            if (theCollab.data.total == 0) {
+                $('#notFound').html("Nothing Found! PLACEHOLDER")
+            }
+            else {
+
             //just to shorten the code
-            var results = theCollab.data.results
-            console.log(theCollab.data.total)
-                if (theCollab.data.total == 0) {
-                    $('#notFound').html("Nothing Found!")
-                }
-                else {
-                    //these will be changed to the comics that show up with matching characters.
-                    strCollabTitle1 = theCollab.data.results[0].title;
-                    numCollabId1 = theCollab.data.results[0].id;
-                    imgCollabThumb1 = theCollab.data.results[0].thumbnail.path + "." + theCollab.data.results[0].thumbnail.extension
+            var result = theCollab.data.results
+            //code spits out one comic. 
+                for (i = 0; i < result.length; i++) {
+                    console.log(result[i]);
 
-                    console.log(strCollabTitle1);
-                    console.log(imgCollabThumb1);
+                    strCollabTitle1 = result[i].title;
+                    numCollabId1 = result[i].id;
+                    imgCollabThumb1 = result[i].thumbnail.path + "." + result[i].thumbnail.extension
 
-                    // strCollabTitle2 = theCollab.data.results[1].title;
-                    // numCollabId2 = theCollab.data.results[1].id;
-                    // imgCollabThumb2 = theCollab.data.results[1].thumbnail.path + "." + theCollab.data.results[1].thumbnail.extension
+
+            //This is to test if it can spit out multiple comics, but doesn't work if there is only one comic to display.   
+                    // console.log(strCollabTitle1);
+                    // console.log(imgCollabThumb1);
+
+                    // strCollabTitle2 = theCollab.data.results[i + 1].title;
+                    // numCollabId2 = theCollab.data.results[i + 1].id;
+                    // imgCollabThumb2 = theCollab.data.results[i + 1].thumbnail.path + "." + theCollab.data.results[i + 1].thumbnail.extension
                     // console.log(strCollabTitle2);
                     // console.log(imgCollabThumb2);
 
 
-                    // strCollabTitle3 = theCollab.data.results[2].title;
-                    // numCollabId3 = theCollab.data.results[2].id;
-                    // imgCollabThumb3 = theCollab.data.results[2].thumbnail.path + "." + theCollab.data.results[2].thumbnail.extension
+                    // strCollabTitle3 = theCollab.data.results[i + 2].title;
+                    // numCollabId3 = theCollab.data.results[i + 2].id;
+                    // imgCollabThumb3 = theCollab.data.results[i + 2].thumbnail.path + "." + theCollab.data.results[i + 2].thumbnail.extension
                     // console.log(strCollabTitle3);
                     // console.log(imgCollabThumb3);
 
 
+            //Fancy Velocity JS stuff
                     $('#firstNameCollab').text(strCharacterName);
                     $('#firstNameCollab').velocity("fadeIn");
 
@@ -204,6 +198,7 @@ $(document).ready(function () {
                     $('#comic1').html("<img style='width:300px; height:300px' src=" + imgCollabThumb1 + "></img>")
                     $('#comic1').velocity("bounceIn");
 
+            //Once the code above to get the other comics works.
                     // $('#comic2').html("<img style='width:300px; height:300px' src=" + imgCollabThumb2 + "></img>")
                     // $('#comic2').velocity("bounceIn");
 
@@ -211,18 +206,21 @@ $(document).ready(function () {
                     // $('#comic3').velocity("bounceIn");
 
 
+            //Makes the searched characters appear below.
                     $('#testImage').velocity("fadeOut");
                     $('#firstCharacterName').velocity("fadeOut");
 
                     $('#secondTestImage').velocity("fadeOut");
                     $('#secondCharacterName').velocity("fadeOut");
 
+
+            //Makes the above searched characters disappear... Optional stuff
                     var disappear = function () {
                         $(".characterInfo").empty();
                     }
 
                     setTimeout(disappear, 1200);
-        
+                }
             }
 
         });
