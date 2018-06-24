@@ -3,3 +3,11 @@
     border-radius: 10px;
     padding-bottom: 15px;
 }
+
+.img-thumbnail {
+    padding: .35rem !important;
+}
+
+.active {
+    background-color: rgb(66, 115, 171);
+}

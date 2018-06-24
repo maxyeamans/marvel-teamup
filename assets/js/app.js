@@ -1,19 +1,17 @@
 $("document").ready(function () {
     console.log('Ready');
-    // let ebaySearchWord = "captain america"
-    //FindItems
+   
     let ebaySearchWord;
-    let queryUrl;
+    let ebayQueryUrl;
     let ebaySearchCount = 0;
-    // let queryUrl = "http://open.api.ebay.com/shopping?version=515&callname=FindItemsAdvanced&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchWord + "&ItemSort=PricePlusShipping&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=7";
-    //PricePlusShipping //BestMatch
+    
     $("#searchBtn").on("click", function (event) {
         event.preventDefault();
         ebaySearchWord = $("#search").val().trim();
         // ebaySearchWord += " comics";
         console.log(ebaySearchWord);
         $("#search").val("");
-        queryUrl = "http://open.api.ebay.com/shopping?version=515&callname=FindItemsAdvanced&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchWord + "&ItemSort=PricePlusShipping&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=5";
+        ebayQueryUrl = "http://open.api.ebay.com/shopping?version=515&callname=FindItemsAdvanced&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchWord + "&ItemSort=PricePlusShipping&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=5";
         //PricePlusShipping //BestMatch
         $(".ebayRow").css("visibility", "hidden");
         $(".ebayRow").addClass("hideMe");
@@ -27,7 +25,7 @@ $("document").ready(function () {
 
     function callAdvanced() {
         $.ajax({
-            url: queryUrl,
+            url: ebayQueryUrl,
             method: "GET",
 
         }).then(function (response) {
@@ -41,7 +39,7 @@ $("document").ready(function () {
     };
     function callSimple() {
         $.ajax({
-            url: queryUrl,
+            url: ebayQueryUrl,
             method: "GET",
 
         }).then(function (response) {
@@ -120,7 +118,7 @@ $("document").ready(function () {
             div.html("SORRY, COMIC NOT FOUND.")
             div.addClass("ebayRow");
             $("#ebayResults").prepend(div);
-            queryUrl = "http://open.api.ebay.com/shopping?version=515&callname=FindItems&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchWord + "&ItemSort=PricePlusShipping&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=5"
+            ebayQueryUrl = "http://open.api.ebay.com/shopping?version=515&callname=FindItems&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchWord + "&ItemSort=PricePlusShipping&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=5"
             ebaySearchWord += "comics";
             console.log(ebaySearchWord);
              callSimple();
