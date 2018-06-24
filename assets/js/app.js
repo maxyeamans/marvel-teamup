@@ -74,9 +74,7 @@ $(document).ready(function () {
 
             }
             else {
-                console.log(firstCharacter);
-                console.log(firstCharacter.data.count);
-
+                console.log("Search results for first character: " + firstCharacter.data.total);
                 imgCharacterThumb = firstCharacter.data.results[0].thumbnail.path + "." + firstCharacter.data.results[0].thumbnail.extension;
                 numCharacterId = firstCharacter.data.results[0].id;
                 strCharacterName = firstCharacter.data.results[0].name;
@@ -115,8 +113,7 @@ $(document).ready(function () {
                 $('#secondTestImage').html("CANNOT FIND CHARACTER PLACEHOLDER!");
             }
             else {
-                console.log(secondCharacter.data.count);
-
+                console.log("Search results for second character: " + secondCharacter.data.count);
                 imgCharacterThumb2 = secondCharacter.data.results[0].thumbnail.path + "." + secondCharacter.data.results[0].thumbnail.extension;
                 numCharacterId2 = secondCharacter.data.results[0].id;
                 strCharacterName2 = secondCharacter.data.results[0].name;
@@ -150,43 +147,89 @@ $(document).ready(function () {
             method: "GET",
         }).then(function (theCollab) {
 
+            console.log(theCollab)
+            console.log(theCollab.data.total)
+
+            //Failed Search
             if (theCollab.data.total == 0) {
-                $('#comicPictures').empty();
-                $('#notFound').html("Nothing Found! PLACEHOLDER");
+                $('#testImage').velocity("fadeOut");
+                $('#firstCharacterName').velocity("fadeOut");
+                $('#secondTestImage').velocity("fadeOut");
+                $('#secondCharacterName').velocity("fadeOut");
+
+
+                $('#comic1').velocity("fadeOut");
+                $('#comic2').velocity("fadeOut");
+                $('#comic3').velocity("fadeOut");
+
+                var notFound = function () {
+                    $(".comics").empty();
+                    $('#notFound').html("Nothing Found! PLACEHOLDER");
+                }
+
+                setTimeout(notFound, 1200);
+
+
+
             }
             else {
 
+                $('#notFound').empty();
                 //just to shorten the code
                 var result = theCollab.data.results;
+                console.log("Comics found: " + result.length)
 
-                //Not sure about using a for loop to get the other comics? Test code by replacing the result[0] with result[i]
-                // for (i = 0; i < result.length; i++) {
-                console.log(result[0]);
+
+
+                //This makes the search limited to 3 comics!
+                $.each(result, function (key, value) {
+                    return key < 2
+                });
+
+
+                //console logs our results and if they exist
+                console.log(result[0], "Does it exist?", typeof result[0] != "undefined");
+                console.log(result[1], "Does it exist?", typeof result[1] != "undefined");
+                console.log(result[2], "Does it exist?", typeof result[2] != "undefined");
 
                 //code spits out one comic. 
                 strCollabTitle1 = result[0].title;
                 numCollabId1 = result[0].id;
                 imgCollabThumb1 = result[0].thumbnail.path + "." + result[0].thumbnail.extension;
 
+                console.log(strCollabTitle1);
+                console.log(imgCollabThumb1);
 
-                //This is to test if it can spit out multiple comics, but doesn't work if there is only one comic to display.   
-                // console.log(strCollabTitle1);
-                // console.log(imgCollabThumb1);
-
-                // strCollabTitle2 = theCollab.data.results[i + 1].title;
-                // numCollabId2 = theCollab.data.results[i + 1].id;
-                // imgCollabThumb2 = theCollab.data.results[i + 1].thumbnail.path + "." + theCollab.data.results[i + 1].thumbnail.extension;
-                // console.log(strCollabTitle2);
-                // console.log(imgCollabThumb2);
+                $('#comic1').html("<img style='width:300px; height:300px' src=" + imgCollabThumb1 + "></img>");
+                $('#comic1').velocity("bounceIn");
 
 
-                // strCollabTitle3 = theCollab.data.results[i + 2].title;
-                // numCollabId3 = theCollab.data.results[i + 2].id;
-                // imgCollabThumb3 = theCollab.data.results[i + 2].thumbnail.path + "." + theCollab.data.results[i + 2].thumbnail.extension;
-                // console.log(strCollabTitle3);
-                // console.log(imgCollabThumb3);
+
+                if (typeof result[1] != "undefined") {
+                    strCollabTitle2 = theCollab.data.results[1].title;
+                    numCollabId2 = theCollab.data.results[1].id;
+                    imgCollabThumb2 = theCollab.data.results[1].thumbnail.path + "." + theCollab.data.results[1].thumbnail.extension;
+                    console.log(strCollabTitle2);
+                    console.log(imgCollabThumb2);
 
 
+                    $('#comic2').html("<img style='width:300px; height:300px' src=" + imgCollabThumb2 + "></img>")
+                    $('#comic2').velocity("bounceIn");
+
+
+                }
+
+                if (typeof result[2] != "undefined") {
+                    strCollabTitle3 = theCollab.data.results[2].title;
+                    numCollabId3 = theCollab.data.results[2].id;
+                    imgCollabThumb3 = theCollab.data.results[2].thumbnail.path + "." + theCollab.data.results[2].thumbnail.extension;
+                    console.log(strCollabTitle3);
+                    console.log(imgCollabThumb3);
+
+                    $('#comic3').html("<img style='width:300px; height:300px' src=" + imgCollabThumb3 + "></img>")
+                    $('#comic3').velocity("bounceIn");
+
+                }
                 //Fancy Velocity JS stuff
                 $('#firstNameCollab').text(strCharacterName);
                 $('#firstNameCollab').velocity("fadeIn");
@@ -201,15 +244,6 @@ $(document).ready(function () {
                 $('#secondCharacterCollab').velocity("fadeIn");
 
 
-                $('#comic1').html("<img style='width:300px; height:300px' src=" + imgCollabThumb1 + "></img>");
-                $('#comic1').velocity("bounceIn");
-
-                //Once the code above to get the other comics works.
-                // $('#comic2').html("<img style='width:300px; height:300px' src=" + imgCollabThumb2 + "></img>")
-                // $('#comic2').velocity("bounceIn");
-
-                // $('#comic3').html("<img style='width:300px; height:300px' src=" + imgCollabThumb3 + "></img>")
-                // $('#comic3').velocity("bounceIn");
 
 
                 //Makes the searched characters appear below.
@@ -227,8 +261,6 @@ $(document).ready(function () {
 
                 setTimeout(disappear, 1200);
             }
-            //this one is for the for loop.
-            // }
 
         });
     });
