@@ -38,6 +38,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
+                        <!-- The images in here are placeholders. They will eventually be dynamically added later with a Velocity transition -->
                         <div class="col-6">
                             <img src="http://i.annihil.us/u/prod/marvel/i/mg/2/60/537bcaef0f6cf.jpg" class="img-fluid" id="display-image-1">
                             <p class="text-center" id="display-name-1">Wolverine</p>
@@ -48,7 +49,7 @@
                         </div>
                     </div>
                     <div id="display-teamup-info">
-                        <p>Wolverine and Captain America first teamed up in
+                        <p>First team up: 
                             <span id="display-teamup-issue"></span>
                         </p>
                     </div>
@@ -78,8 +79,8 @@
 
                 arrayCombinedIDs.push(numID);
                 console.log(numID);
-                urlThumbnail = getThumbnail(numID);
-                strName = getName(numID);
+                urlThumbnail = getThumbnailByID(numID);
+                strName = getNameByID(numID);
                 $("#display-image-" + incrementer).attr("src", urlThumbnail);
                 $("#display-name-" + incrementer).text(strName);
                 incrementer++;
@@ -96,7 +97,7 @@
             }).then(function (response) {
                 console.log(response);
                 console.log(response.data.results["0"].title);
-                // $("#display-teamup-issue").text(response.data.results["0"].title + ".");
+                $("#display-teamup-issue").text(response.data.results["0"].title);
             });
         });
 

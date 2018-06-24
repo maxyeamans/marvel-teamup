@@ -41,7 +41,7 @@ $("#characterInput").on("click", function (event) {
         url: queryURL,
         method: "GET"
     }).then(function (response) {
-
+        
         // imgCharacterThumb = response.data.results[0].thumbnail.path + "." + response.data.results[0].thumbnail.extension;
         // numCharacterId = response.data.results[0].id;
         // strCharacterName = response.data.results[0].name;
@@ -82,7 +82,7 @@ database.ref().on("child_added", function (snapshot) {
     })
 
     // set div class
-    divChar.addClass("col-xl-2 col-lg-3 col-md-4 col-6 my-2")
+    divChar.addClass("col-xl-2 col-lg-3 col-md-4 col-4 my-2")
 
     // add image to div
     divChar.append(imgChar);
@@ -120,7 +120,7 @@ $(document).on("click", ".img-thumbnail", function () {
     }
 });
 
-function getThumbnail( id ) {
+function getThumbnailByID( id ) {
     
     var thumbLink;
     
@@ -131,7 +131,7 @@ function getThumbnail( id ) {
     return thumbLink;
 }
 
-function getName( id ) {
+function getNameByID( id ) {
     var charName;
     
     ref = database.ref().child( id );
