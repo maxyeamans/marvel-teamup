@@ -42,18 +42,22 @@ $("#characterInput").on("click", function (event) {
         method: "GET"
     }).then(function (response) {
 
-        imgCharacterThumb = response.data.results[0].thumbnail.path + "." + response.data.results[0].thumbnail.extension;
-        numCharacterId = response.data.results[0].id;
-        strCharacterName = response.data.results[0].name;
+        // imgCharacterThumb = response.data.results[0].thumbnail.path + "." + response.data.results[0].thumbnail.extension;
+        // numCharacterId = response.data.results[0].id;
+        // strCharacterName = response.data.results[0].name;
 
+        // charNumber = response.data.results[0].id;
+        // console.log(response.data.results[0].id);
+        // database.ref(charNumber + "/").set({
+        //     idNumber: numCharacterId,
+        //     name: strCharacterName,
+        //     thumbnail: imgCharacterThumb
 
-        charNumber = response.data.results[0].id;
-        console.log(response.data.results[0].id);
-        database.ref(charNumber + "/").set({
-            idNumber: numCharacterId,
-            name: strCharacterName,
-            thumbnail: imgCharacterThumb,
-
+        console.log(response.data.results[0].name, response.data.results[0].id);
+        database.ref(response.data.results[0].id + "/").set({
+            idNumber: response.data.results[0].id,
+            name: response.data.results[0].name,
+            thumbnail: response.data.results[0].thumbnail.path + "." + response.data.results[0].thumbnail.extension
         });
     });
 });
@@ -74,7 +78,7 @@ database.ref().on("child_added", function (snapshot) {
         src: charImgPath,
         class: "img-thumbnail inactive",
         title: snap.name,
-        value: snap.idNumber
+        "id-number": snap.idNumber
     })
 
     // set div class
@@ -88,7 +92,6 @@ database.ref().on("child_added", function (snapshot) {
 });
 
 var activeElements = 0;
-$("#get-info").disabled = true;
 
 $(document).on("click", ".img-thumbnail", function () {
     if ($(this).hasClass("inactive") && activeElements < 2) {
@@ -106,10 +109,34 @@ $(document).on("click", ".img-thumbnail", function () {
         console.log(activeElements);
     }
 
+    // Enable submit button if two characters are selected
     if (activeElements == 2) {
         $(".inactive").css({ opacity: 0.5 });
+        $("#get-info").prop("disabled", false);
     }
     else {
         $(".inactive").css({ opacity: 1 });
+        $("#get-info").prop("disabled", true);
     }
 });
+
+function getThumbnail( id ) {
+    
+    var thumbLink;
+    
+    ref = database.ref().child( id );
+    ref.once("value", function(snapshot){
+        thumbLink = snapshot.val().thumbnail;
+    })
+    return thumbLink;
+}
+
+function getName( id ) {
+    var charName;
+    
+    ref = database.ref().child( id );
+    ref.once("value", function(snapshot){
+        charName = snapshot.val().name;
+    })
+    return charName;
+}
