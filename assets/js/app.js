@@ -10,26 +10,8 @@ firebase.initializeApp(config);
 
 var database = firebase.database();
 
-//Firebase
-//save characters in individual files
-//example: characters folder
-//inside characters have: ID, thumbnail, image
-//have if statement to see if character is already in database, if not, create one.
-
-//Javascript:
-//have text input form check marvel database and return false if nothing is found.
-//have text input form spit out marvel data into cards
-
-
 var strCharacterName;
-var numCharacterId;
-var imgCharacterThumb;
-var imgCharacterMain;
 
-var strCharacterFolder;
-var strNameFolder;
-
-var charNumber;
 $("#characterInput").on("click", function (event) {
     event.preventDefault();
 
@@ -41,18 +23,9 @@ $("#characterInput").on("click", function (event) {
         url: queryURL,
         method: "GET"
     }).then(function (response) {
-        
-        // imgCharacterThumb = response.data.results[0].thumbnail.path + "." + response.data.results[0].thumbnail.extension;
-        // numCharacterId = response.data.results[0].id;
-        // strCharacterName = response.data.results[0].name;
-
-        // charNumber = response.data.results[0].id;
-        // console.log(response.data.results[0].id);
-        // database.ref(charNumber + "/").set({
-        //     idNumber: numCharacterId,
-        //     name: strCharacterName,
-        //     thumbnail: imgCharacterThumb
-
+        if(response.data.total == 0){
+            console.log("No character found.");
+        }
         console.log(response.data.results[0].name, response.data.results[0].id);
         database.ref(response.data.results[0].id + "/").set({
             idNumber: response.data.results[0].id,
@@ -60,6 +33,9 @@ $("#characterInput").on("click", function (event) {
             thumbnail: response.data.results[0].thumbnail.path + "." + response.data.results[0].thumbnail.extension
         });
     });
+
+    // Clear the search field after submit
+    document.getElementById("input-form").reset();
 });
 
 database.ref().on("child_added", function (snapshot) {
@@ -93,14 +69,18 @@ database.ref().on("child_added", function (snapshot) {
 
 var activeElements = 0;
 
+var constMAX_CHARS = 2;
+
+// On click function that limits user to selecting two characters
 $(document).on("click", ".img-thumbnail", function () {
-    if ($(this).hasClass("inactive") && activeElements < 2) {
+    if ($(this).hasClass("inactive") && activeElements < constMAX_CHARS) {
         $(this).addClass("active");
         $(this).removeClass("inactive");
         activeElements++;
         console.log(activeElements);
     }
     else {
+        // Real important: don't let clicking inactive elements decrement the count.
         if ($(this).hasClass("active")) {
             activeElements--;
         }
@@ -120,22 +100,74 @@ $(document).on("click", ".img-thumbnail", function () {
     }
 });
 
-function getThumbnailByID( id ) {
-    
+/*  The code below may be a bit over-engineered for finding a two-character teamup,
+    but it's meant to be extended in the future to allow for finding the first teamup
+    for as many characters as needed. */
+
+// Array of ID numbers to iterate through
+var arrayCombinedIDs = [];
+// This will hold all of the IDs so they can be used in the API call
+var strCombinedIDs;
+
+$("#get-info").on("click", function (event) {
+
+    // Empty the array if a comparison has already been done
+    arrayCombinedIDs = [];
+    incrementer = 1;
+
+    // Iterate through the selected characters
+    $(".active").each(function () {
+        var numID = $(this).attr("id-number");
+        var urlThumbnail;
+        var strName;
+
+        // Push the character ID number to the array
+        arrayCombinedIDs.push(numID);
+        console.log(numID);
+        urlThumbnail = getThumbnailByID(numID);
+        strName = getNameByID(numID);
+        // Using the incrementer to get the display div here. Eventually, I want to allow the user
+        // to choose how many characters they'll lookup, and dynamically generate display divs.
+        $("#display-image-" + incrementer).attr("src", urlThumbnail);
+        $("#display-name-" + incrementer).text(strName);
+        incrementer++;
+    });
+
+    // Convert the ID array into a string with the array values separated by just commas
+    strCombinedIDs = arrayCombinedIDs.toString();
+    console.log(strCombinedIDs);
+
+    var teamupQueryURL = "https://gateway.marvel.com/v1/public/comics?format=comic&formatType=comic&noVariants=true&dateRange=1960-01-01%2C2018-06-21&sharedAppearances=" + strCombinedIDs + "&orderBy=focDate%2ConsaleDate&limit=1&ts=1&apikey=4287eee52c27f292e44137f86910da4a&hash=3f4394a993af3110f684ed8d0f8db35d";
+
+    $.ajax({
+        url: teamupQueryURL,
+        method: "GET"
+    }).then(function (response) {
+        console.log(response);
+        console.log(response.data.results["0"].title);
+        $("#display-teamup-issue").text(response.data.results["0"].title);
+    });
+});
+
+
+// Look up a character's thumbnail pic from Firebase by their ID number
+function getThumbnailByID(id) {
+
     var thumbLink;
-    
-    ref = database.ref().child( id );
-    ref.once("value", function(snapshot){
+
+    ref = database.ref().child(id);
+    ref.once("value", function (snapshot) {
         thumbLink = snapshot.val().thumbnail;
     })
     return thumbLink;
 }
 
-function getNameByID( id ) {
+// Look up a character's name from Firebase by their ID number
+function getNameByID(id) {
     var charName;
-    
-    ref = database.ref().child( id );
-    ref.once("value", function(snapshot){
+
+    ref = database.ref().child(id);
+    ref.once("value", function (snapshot) {
         charName = snapshot.val().name;
     })
     return charName;
