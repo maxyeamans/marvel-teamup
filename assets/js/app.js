@@ -1,6 +1,7 @@
 $("document").ready(function () {
     console.log('Ready');
-    
+    let ebayQueryUrl;
+    let ebayComic;
     //========================================================================================================
     //Character Selection and TeamupCall
     var arrayCombinedIDs = [];
@@ -39,8 +40,37 @@ $("document").ready(function () {
         }).then(function (response) {
             console.log(response);
             console.log(response.data.results["0"].title);
-            // $("#display-teamup-issue").text(response.data.results["0"].title + ".");
-        });
+
+            // Ebay Additions
+            ebayComic = response.data.results["0"].title;
+            ebayComic = ebayComic.split(" ");
+            console.log(ebayComic);
+            for(let i = 0; i < ebayComic.length; i++){
+                ebayComic[i] = ebayComic[i].replace(/[^a-zA-Z0-9 ]/g, "");
+                if (i < ebayComic.length - 1){
+                    ebayComic[i] = ebayComic[i]+"+"
+                };    
+            };
+            ebayComic[ebayComic.length - 2] = "";
+            ebayComic = ebayComic.join();
+            ebayComic = ebayComic.replace(/,/g, '');
+            console.log(ebayComic);
+            
+            
+            
+
+            
+            
+            console.log(ebayComic);
+            // console.log(ebayComic);
+            // let comicYear = ebayComic[1].substring(1,5);
+            // ebayComic = ebayComic[0]+"+"+comicYear;
+            // ebayComic = ebayComic.trim();
+            // console.log(comicYear);
+            // console.log(ebayComic);//
+            ebayQueryUrl = "http://open.api.ebay.com/shopping?version=515&callname=FindItemsAdvanced&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords="+ebayComic+"&ItemSort=BestMatch&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=3";
+
+        
 
 
         //EBAY ADDITIONS
@@ -53,56 +83,46 @@ $("document").ready(function () {
         // REASERCH MORE EBAY API FILTERS TO SEE IF YOU CAN GET
         // THE BEST QUALITY SEARCH RESULTS YOU CAN
 
-
-
-
-        ebayQueryUrl = "http://open.api.ebay.com/shopping?version=515&callname=FindItemsAdvanced&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchOne + "+" + ebaySearchTwo + "&ItemSort=PricePlusShipping&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=1";      //ID 1 = collectibles ID 63 = collectibles/comics
+        
+            setTimeout(() => {
+                
+            
+        
+            
+        // ebayQueryUrl = "http://open.api.ebay.com/shopping?version=515&callname=FindItemsAdvanced&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" +ebayComic+"&ItemSort=BestMatchPlusPrice&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=3";      //ID 1 = collectibles ID 63 = collectibles/comics
         //PricePlusShipping //BestMatch
+        console.log(ebayQueryUrl);
         $(".ebayRow").css("visibility", "hidden");
         $(".ebayRow").addClass("hideMe");
         callAdvanced();
-        setTimeout(() => {
-            $(".hideMe").css("display", "none");
-        }, 500);
+        
         
         for(let i = 1; i < 3; i++){
             if(i === 1){
-        ebayQueryUrl = "http://open.api.ebay.com/shopping?version=515&callname=FindItems&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchOne + "+comics&ItemSort=PricePlusShipping&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=10";
+        ebayQueryUrlLeft = "http://open.api.ebay.com/shopping?version=515&callname=FindItems&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchOne + "+comics&ItemSort=PricePlusShipping&CategoryID=63&responseencoding=JSON&MaxEntries=3";
         let target = $("#ebayResultsLeft");
-        callSimple(ebayQueryUrl, target);
+        callSimple(ebayQueryUrlLeft, target);
         } else {
-        ebayQueryUrl = "http://open.api.ebay.com/shopping?version=515&callname=FindItems&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchTwo + "+comics&ItemSort=PricePlusShipping&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=10";
+        ebayQueryUrlRight = "http://open.api.ebay.com/shopping?version=515&callname=FindItems&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchTwo + "+comics&ItemSort=PricePlusShipping&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=3";
         let target = $("#ebayResultsRight");
-        callSimple(ebayQueryUrl, target);
+        callSimple(ebayQueryUrlRight, target);
             }
         };
 
-
+        setTimeout(() => {
+            $(".hideMe").css("display", "none");
+        }, 200);
+    
+    }, 1000);
+    });
     });
     //========================================================================================================  
     let ebaySearchComic;
     let ebaySearchOne;
     let ebaySearchTwo;
-    let ebayQueryUrl;
+    // let ebayQueryUrl;
     let ebaySearchCount = 0;
-
-    // $("#searchBtn").on("click", function (event) {
-    //     event.preventDefault();
-    //     // ebaySearchWord = $("#search").val().trim();
-    //     // ebaySearchWord += " comics";
-    //     // console.log(ebaySearchWord);
-    //     // $("#search").val("");
-    //     ebayQueryUrl = "http://open.api.ebay.com/shopping?version=515&callname=FindItemsAdvanced&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchOne + "+" + ebaySearchTwo + "&ItemSort=PricePlusShipping&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=5";
-    //     //PricePlusShipping //BestMatch
-    //     $(".ebayRow").css("visibility", "hidden");
-    //     $(".ebayRow").addClass("hideMe");
-    //     callAdvanced();
-
-    //     setTimeout(() => {
-    //         $(".hideMe").css("display", "none");
-    //     }, 2000);
-
-    // });
+    // let ebayComic;
 
     function callAdvanced() {
         $.ajax({
@@ -111,10 +131,9 @@ $("document").ready(function () {
 
         }).then(function (response) {
             // console.log(response);
-            let test = response.split(",");
+            let test = response;
             test = JSON.parse(test);
             console.log(test);
-            // DisplayEbayResultsSimple(test);
             DisplayEbayResultsAdvanced(test);
         });
     };
@@ -125,12 +144,11 @@ $("document").ready(function () {
             method: "GET",
 
         }).then(function (response) {
-            console.log(response);
-            let test = response.split(",")
+            // console.log(response);
+            let test = response;
             test = JSON.parse(test);
             console.log(test);
             DisplayEbayResultsSimple(test, target);
-            // DisplayEbayResultsAdvanced(test);
         });
     };
 
@@ -139,11 +157,12 @@ $("document").ready(function () {
             let div = $("<div>");
             div.addClass("row");
             div.addClass("ebayCharacterRow");
+            div.addClass("ebayRow");
             div.css("margin", "20px");
             let img = $("<img>");
             img.attr("src", test.Item[i].GalleryURL);
-            img.css("width", "200px");
-            img.css("height", "200px");
+            img.css("width", "150px");
+            img.css("height", "150px");
             img.css("float", "left");
             img.css("margin-right", "10px");
             let title = $('<h4>');
@@ -161,7 +180,7 @@ $("document").ready(function () {
             ebayLogo.css("height", "25px");
             ebayLogo.css("float", "right");
             div.prepend(img, title, bids, price, ebayLogo, link);
-            target.prepend(div);
+            target.append(div);
         };
     };
 
@@ -175,7 +194,7 @@ $("document").ready(function () {
                 let img = $("<img>");
                 img.attr("src", test.SearchResult[0].ItemArray.Item[i].GalleryURL);
                 img.attr("href", test.SearchResult[0].ItemArray.Item[i].ViewItemURLForNaturalSearch);
-                img.css("width", "200px");
+                img.css("width", "150px");
                 img.css("height", "200px");
                 img.css("float", "left");
                 img.css("margin-right", "10px");
@@ -194,7 +213,7 @@ $("document").ready(function () {
                 ebayLogo.css("height", "25px");
                 ebayLogo.css("float", "right");
                 div.prepend(img, title, bids, price, ebayLogo, link);
-                $('#ebayResults').prepend(div);
+                $('#ebayResults').append(div);
             };
         } else {
             let div = $("<div>");
@@ -203,9 +222,6 @@ $("document").ready(function () {
             $("#ebayResults").prepend(div);
             
         };
-
-        
-
 
     };
 
