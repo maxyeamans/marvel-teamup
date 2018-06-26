@@ -1,23 +1,64 @@
 html{
     background: grey;
-}
+}    
+
+/* Is this the font we want to use? */
+/* * {
+    font-family: 'Marvel', sans-serif;
+} */
+
+/* Need to decide on body style */
 body{
     background: grey;
-}
+}    
+body {
+    background-color: black;
+    color: white;
+}    
+
+/* Is there a way to get the background pic width to not compress as the screen width goes down? */
 .jumbotron{
     background-image: url("../images/jumbo.jpg");
     background-size: 100% 500%;
     background-position-y: -235px;
     color: white;
     border-bottom: 2px solid darkred;
-}
-#display-teamup{
-    /* visibility: hidden; */
-}
+    background-color: red;
+}    
+
+/* Commenting this out til needed */
+/* #display-teamup{
+    visibility: hidden;
+}     */
+
 .ebayRow{
     border-bottom: 4px solid crimson;
     border-radius: 10px;
     padding-bottom: 15px;
+}    
+
+.img-thumbnail {
+    padding: .35rem !important;
+}    
+
+.active {
+    background-color: rgb(66, 115, 171);
+}
+
+.modal-title {
+    color: red;
+}
+
+.modal-body {
+    color: red;
+}
+
+.card-body {
+    background-color: black;
+}
+
+.card-header {
+    background-color: red;
 }
 
 .img-thumbnail {
@@ -27,3 +68,4 @@ body{
 .active {
     background-color: rgb(66, 115, 171);
 }
+
