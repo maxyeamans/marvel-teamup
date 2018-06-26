@@ -1,3 +1,28 @@
+<<<<<<< HEAD
+=======
+html{
+    background: grey;
+}
+body{
+    background: grey;
+}
+.jumbotron{
+    background-image: url("../images/jumbo.jpg");
+    background-size: 100% 500%;
+    background-position-y: -235px;
+    color: white;
+    border-bottom: 2px solid darkred;
+}
+#display-teamup{
+    /* visibility: hidden; */
+}
+.ebayRow{
+    border-bottom: 4px solid crimson;
+    border-radius: 10px;
+    padding-bottom: 15px;
+}
+
+>>>>>>> 1f162bf8646fae7caf7ec2a2b471c66a37a74ffc
 .img-thumbnail {
     padding: .35rem !important;
 }
