@@ -4,16 +4,149 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
         crossorigin="anonymous">
     <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Marvel" rel="stylesheet">
 
-<style>
-.comic {
-    margin: 10px; 
-    float:left;
-}
+    <style>
+        * {
+            font-family: 'Marvel', sans-serif;
+        }
+
+        body {
+            background-color: black;
+            color: white;
+        }
+
+        .card-body {
+            background-color: black;
+        }
+
+        .jumbotron {
+            background-color: red;
+            color: white;
+        }
+
+        .card-header {
+            background-color: red;
+        }
+
+        .img-thumbnail {
+            padding: .35rem !important;
+        }
+
+        .active {
+            background-color: rgb(66, 115, 171);
+        }
+
+        .modal-title {
+            color: red;
+        }
+
+        .modal-body {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="jumbotron">
+        <h3 style="font-size: 50pt; font-weight:bold" class="text-center">MARVEL TEAMUP COMIC SEARCH</h3>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div id></div>
+                <form>
+                    <input id="userInput" type="text" placeholder="Character Name">
+                    <button id="characterInput" class="btn btn-primary" type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- begin button display area -->
+        <div class="row" id="display-button-area">
+
+        </div>
+        <!-- end button display area -->
+
+        <!-- begin teamup display area -->
+        <div class="mt-4" id="display-teamup">
+            <div class="card">
+                <div class="card-header">
+                    <div style="font-size: 36pt" class="text-center">Your Chosen Teamup</div>
+                    <button type="button" class="btn btn-secondary btn-sm float-right" id="get-info" disabled>Get Info</button>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <h3 class="text-center" id="display-name-1">Wolverine</h3>
+                            <img src="http://i.annihil.us/u/prod/marvel/i/mg/2/60/537bcaef0f6cf.jpg" class="img-fluid" id="display-image-1">
+                        </div>
+
+                        <div class="col-6">
+                            <h3 class="text-center" id="display-name-2">Captain America</h3>
+                            <img src="http://i.annihil.us/u/prod/marvel/i/mg/3/50/537ba56d31087.jpg" class="img-fluid" id="display-image-2">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div id="comic-search-result" class="card-header">Your Search Results!</div>
+                    <div id="display-teamup-info" class="row">
+
+                        <div class="col-4">
+                            <div class='comics' id="comic1"></div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class='comics' id="comic2"></div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class='comics' id="comic3"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end teamup display area -->
+    </div>
+
+    <!-- Modal -->
+    <div id="noCharacterModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">ERROR!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
+    <!--This Is The HTML for Jason's Original Code-->
 
-</style>
+    <!--<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
+    <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase.js"></script>
+
+    <style>
+        .comic {
+            margin: 10px;
+            float: left;
+        }
+    </style>
 
 </head>
 
@@ -28,7 +161,7 @@
                     <input id="userInput" type="text" placeholder="Character Name">
                     <button id="characterInput" class="btn btn-primary" type=submit>Submit</button>
                 </form>
-                <h3 id=firstCharacterName class="characterInfo"></h3>
+                <h3 id=firstCollabName class="characterInfo"></h3>
                 <div id="testImage" class="col-lg-4 characterInfo"></div>
             </div>
             <div class="col-lg-4">
@@ -64,24 +197,25 @@
             <div class="col-lg-3 comics" id="comic3"></div>
         </div>
     </div>
-    </div>
+    </div>-->
+
 
     <!--JQUERY-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
+    <!--Bootstrap for Modals-->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+    <!--VELOCITY-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/2.0.5/velocity.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/2.0.5/velocity.ui.min.js"></script>
 
     <!--MOMENT-->
     <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
 
     <!--CUSTOM SCRIPT-->
     <script src="assets/js/app.js"></script>
-
-    <!--VELOCITY-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/2.0.5/velocity.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/2.0.5/velocity.ui.min.js"></script>
-
-
-
 </body>
 
 </html>
