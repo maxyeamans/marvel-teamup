@@ -1,4 +1,5 @@
 $("document").ready(function () {
+    // Firebase stuff
     var config = {
         apiKey: "AIzaSyAyM37LB5h7tDTR7vlf2DHYTkCDP5b0VLc",
         authDomain: "soaring-indigo-mimes.firebaseapp.com",
@@ -9,10 +10,19 @@ $("document").ready(function () {
     };
     firebase.initializeApp(config);
 
+    /*  Firebase is being used to hold information for any character that is on the page.
+        The information stored is:
+            IDnumber: the character's unique ID in Marvel's database
+            Name: the character's name
+            Thumbnail: the URL for the character's image file
+        All of this info will be used later either for displaying info or for AJAX calls. */
+
     var database = firebase.database();
 
+    // Variable to hold the name of the character the user wants to add to the page. This gets passed in to the AJAX query url.
     var strCharacterName;
 
+    // On click function for adding more characters to the page
     $("#characterInput").on("click", function (event) {
         event.preventDefault();
 
@@ -24,6 +34,8 @@ $("document").ready(function () {
             url: queryURL,
             method: "GET"
         }).then(function (response) {
+            // Quick conditional to let us know that a character wasn't found
+            // TODO: attach a modal to this condition to let the user know a character wasn't found.
             if (response.data.total == 0) {
                 console.log("No character found.");
             }
@@ -39,6 +51,7 @@ $("document").ready(function () {
         document.getElementById("input-form").reset();
     });
 
+    // This code takes all the characters currently in the database and displays them on the page.
     database.ref().on("child_added", function (snapshot) {
 
         var snap = snapshot.val();
@@ -47,7 +60,7 @@ $("document").ready(function () {
         // create image element
         var imgChar = $("<img>");
         // create div element to hold image
-        var divChar = $("<div>")
+        var divChar = $("<div>");
 
         // set image attributes
         imgChar.attr({
@@ -56,10 +69,10 @@ $("document").ready(function () {
             class: "img-thumbnail inactive",
             title: snap.name,
             "id-number": snap.idNumber
-        })
+        });
 
         // set div class
-        divChar.addClass("col-xl-2 col-lg-3 col-md-4 col-4 my-2")
+        divChar.addClass("col-xl-2 col-lg-3 col-md-4 col-4 my-2");
 
         // add image to div
         divChar.append(imgChar);
@@ -68,8 +81,10 @@ $("document").ready(function () {
         $("#display-button-area").append(divChar);
     });
 
+    // Set active elements to zero on page load
     var activeElements = 0;
 
+    // I want to extend this code later to allow the user to pick more than two characters, so we're holding the maximum here for now.
     var constMAX_CHARS = 2;
 
     // On click function that limits user to selecting two characters
@@ -107,7 +122,7 @@ $("document").ready(function () {
 
     // Array of ID numbers to iterate through
     var arrayCombinedIDs = [];
-    // This will hold all of the IDs so they can be used in the API call
+    // This will hold all of the IDs so they can be used in the AJAX call
     var strCombinedIDs;
 
     $("#get-info").on("click", function (event) {
@@ -161,7 +176,7 @@ $("document").ready(function () {
             thumbLink = snapshot.val().thumbnail;
         })
         return thumbLink;
-    }
+    };
 
     // Look up a character's name from Firebase by their ID number
     function getNameByID(id) {
