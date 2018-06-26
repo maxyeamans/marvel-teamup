@@ -14,11 +14,11 @@ body{
 #display-teamup{
     /* visibility: hidden; */
 }
-/* .ebayRow{
+.ebayRow{
     border-bottom: 4px solid crimson;
     border-radius: 10px;
     padding-bottom: 15px;
-} */
+}
 
 .img-thumbnail {
     padding: .35rem !important;
@@ -28,26 +28,18 @@ body{
     background-color: rgb(66, 115, 171);
 }
 
-/* .ebayComicListing{ */
-    /* border: 3px solid green; */
-    /* height: 100px; */
-    /* width: 100%; */
+.ebayComicListing{ 
 }
 .ECLimg{
-    /* position: absolute; */
 }
 .ECLtitle{
-    /* position: absolute; */
 }
 .ECLlink{
-    /* position: absolute; */
 }
 .ECLbid{
-    /* position: absolute; */
 }
 .ECLprice{
-    /* position: absolute; */
 }
 .ECLlogo{
-    /* position: absolute; */
+    
 }
