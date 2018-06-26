@@ -5,7 +5,7 @@
         crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
     <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 
 </head>
 
@@ -16,7 +16,8 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-4">
-                <form>
+                <!-- The form needs an id so it can be reset on submit -->
+                <form id="input-form">
                     <input id="userInput" type="text" placeholder="Character Name">
                     <button id="characterInput" class="btn btn-primary" type="submit">Submit</button>
                 </form>
@@ -38,6 +39,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
+                        <!-- The images in here are placeholders. They will eventually be dynamically added later with a Velocity transition -->
                         <div class="col-6">
                             <img src="http://i.annihil.us/u/prod/marvel/i/mg/2/60/537bcaef0f6cf.jpg" class="img-fluid" id="display-image-1">
                             <p class="text-center" id="display-name-1">Wolverine</p>
@@ -48,7 +50,7 @@
                         </div>
                     </div>
                     <div id="display-teamup-info">
-                        <p>Wolverine and Captain America first teamed up in
+                        <p>First team up: 
                             <span id="display-teamup-issue"></span>
                         </p>
                     </div>
@@ -59,12 +61,7 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="assets/js/app.js"></script>
-    <script src="assets/js/test.js"></script>
-    <script>
-
-
-    </script>
-
+    
     <div class="container">
         <!-- EBAY RESULTS HERE -->
         <div class="row">

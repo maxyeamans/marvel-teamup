@@ -1,7 +1,30 @@
+(function() {
+    var cors_api_host = 'cors-anywhere.herokuapp.com';
+    var cors_api_url = 'https://' + cors_api_host + '/';
+    var slice = [].slice;
+    var origin = window.location.protocol + '//' + window.location.host;
+    var open = XMLHttpRequest.prototype.open;
+    XMLHttpRequest.prototype.open = function() {
+        var args = slice.call(arguments);
+        var targetOrigin = /^https?:\/\/([^\/]+)/i.exec(args[1]);
+        if (targetOrigin && targetOrigin[0].toLowerCase() !== origin &&
+            targetOrigin[1] !== cors_api_host) {
+            args[1] = cors_api_url + args[1];
+        }
+        return open.apply(this, args);
+    };
+})();
+//ABOVE: THIS PREVENTS THE CORS ERROR=====================================
+
+
 $("document").ready(function () {
     console.log('Ready');
     let ebayQueryUrl;
     let ebayComic;
+    let ebaySearchComic;
+    let ebaySearchOne;
+    let ebaySearchTwo;
+    let ebaySearchCount = 0;
     //========================================================================================================
     //Character Selection and TeamupCall
     var arrayCombinedIDs = [];
@@ -45,52 +68,46 @@ $("document").ready(function () {
             ebayComic = response.data.results["0"].title;
             ebayComic = ebayComic.split(" ");
             console.log(ebayComic);
+            let ebayYear = ebayComic[ebayComic.length - 2];
+            
+            ebayYear.replace(/[^0-9]/g, "");
+            console.log(ebayYear);
             for(let i = 0; i < ebayComic.length; i++){
-                ebayComic[i] = ebayComic[i].replace(/[^a-zA-Z0-9 ]/g, "");
+                if (ebayComic[i] !== "X-Men"){
+                ebayComic[i] = ebayComic[i].replace(/[^a-zA-Z0-9 - ]/g, "");
+                };
                 if (i < ebayComic.length - 1){
                     ebayComic[i] = ebayComic[i]+"+"
                 };    
             };
-            ebayComic[ebayComic.length - 2] = "";
+            // ebayComic[ebayComic.length - 2] = "";
             ebayComic = ebayComic.join();
             ebayComic = ebayComic.replace(/,/g, '');
             console.log(ebayComic);
-            
-            
-            
-
-            
-            
-            console.log(ebayComic);
-            // console.log(ebayComic);
-            // let comicYear = ebayComic[1].substring(1,5);
-            // ebayComic = ebayComic[0]+"+"+comicYear;
-            // ebayComic = ebayComic.trim();
-            // console.log(comicYear);
-            // console.log(ebayComic);//
-            ebayQueryUrl = "http://open.api.ebay.com/shopping?version=515&callname=FindItemsAdvanced&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords="+ebayComic+"&ItemSort=BestMatch&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=3";
+      
+            ebayQueryUrl = "http://open.api.ebay.com/shopping?version=515&callname=FindItemsAdvanced&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords="+ebayComic+"&ItemSort=BestMatch&SortOrder=Descending&CategoryID=1&responseencoding=JSON&MaxEntries=2";
 
         
 
 
         //EBAY ADDITIONS
         // NEED TO DO-----
-        // #1# 
-        // NEED A CALL FOR LISTINGS FOR EACH SPEREATE CHARACTER CHOSEN TO
-        // DISPLAY 2 SEPERATE ROWS OF CHARACTER SPECIFIC LISTINGS
+        //#5#
+        //
+        // Create another search query so that if the search with TITLE+YEAR+ISSUE has no results
+        // We query another search with TITLE+ISSUE to at least double check for reprints available
+        // Then NO RESULTS FOUND!
         //
         // #3#
         // REASERCH MORE EBAY API FILTERS TO SEE IF YOU CAN GET
         // THE BEST QUALITY SEARCH RESULTS YOU CAN
+        //
+        // #4#
+        // REFORMAT LISTINGS STYLING!!
 
         
-            setTimeout(() => {
+        // setTimeout(() => {
                 
-            
-        
-            
-        // ebayQueryUrl = "http://open.api.ebay.com/shopping?version=515&callname=FindItemsAdvanced&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" +ebayComic+"&ItemSort=BestMatchPlusPrice&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=3";      //ID 1 = collectibles ID 63 = collectibles/comics
-        //PricePlusShipping //BestMatch
         console.log(ebayQueryUrl);
         $(".ebayRow").css("visibility", "hidden");
         $(".ebayRow").addClass("hideMe");
@@ -99,7 +116,7 @@ $("document").ready(function () {
         
         for(let i = 1; i < 3; i++){
             if(i === 1){
-        ebayQueryUrlLeft = "http://open.api.ebay.com/shopping?version=515&callname=FindItems&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchOne + "+comics&ItemSort=PricePlusShipping&CategoryID=63&responseencoding=JSON&MaxEntries=3";
+        ebayQueryUrlLeft = "http://open.api.ebay.com/shopping?version=515&callname=FindItems&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchOne + "+comics&ItemSort=PricePlusShipping&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=3";
         let target = $("#ebayResultsLeft");
         callSimple(ebayQueryUrlLeft, target);
         } else {
@@ -113,16 +130,12 @@ $("document").ready(function () {
             $(".hideMe").css("display", "none");
         }, 200);
     
-    }, 1000);
+    // }, 500);
     });
     });
+
     //========================================================================================================  
-    let ebaySearchComic;
-    let ebaySearchOne;
-    let ebaySearchTwo;
-    // let ebayQueryUrl;
-    let ebaySearchCount = 0;
-    // let ebayComic;
+    
 
     function callAdvanced() {
         $.ajax({
@@ -190,28 +203,35 @@ $("document").ready(function () {
                 let div = $("<div>");
                 div.addClass("row");
                 div.addClass("ebayRow");
-                div.css("margin", "20px");
+                div.addClass("ebayComicListing");
+                // div.css("margin", "20px");
                 let img = $("<img>");
+                img.addClass("ECLimg");
                 img.attr("src", test.SearchResult[0].ItemArray.Item[i].GalleryURL);
                 img.attr("href", test.SearchResult[0].ItemArray.Item[i].ViewItemURLForNaturalSearch);
                 img.css("width", "150px");
-                img.css("height", "200px");
-                img.css("float", "left");
-                img.css("margin-right", "10px");
+                // img.css("height", "200px");
+                // img.css("float", "left");
+                // img.css("margin-right", "10px");
                 let title = $('<h4>');
+                title.addClass("ECLtitle");
                 title.html(test.SearchResult[0].ItemArray.Item[i].Title);
                 let link = $("<a>BUY</a>");
+                link.addClass("ECLlink");
                 link.attr("href", test.SearchResult[0].ItemArray.Item[i].ViewItemURLForNaturalSearch);
                 link.addClass("btn");
                 link.addClass("btn-success");
                 let bids = $('<div>');
+                bids.addClass("ECLbids");
                 bids.html("Total Bids: " + test.SearchResult[0].ItemArray.Item[i].BidCount + "<br><br>");
                 let price = $("<h2>");
+                price.addClass("ECLprice");
                 price.text("$" + test.SearchResult[0].ItemArray.Item[i].ConvertedCurrentPrice.Value);
                 let ebayLogo = $("<img>");
+                ebayLogo.addClass("ECLlogo");
                 ebayLogo.attr("src", "assets/images/ebayLogo.png");
-                ebayLogo.css("height", "25px");
-                ebayLogo.css("float", "right");
+                // ebayLogo.css("height", "25px");
+                // ebayLogo.css("float", "right");
                 div.prepend(img, title, bids, price, ebayLogo, link);
                 $('#ebayResults').append(div);
             };
@@ -224,9 +244,6 @@ $("document").ready(function () {
         };
 
     };
-
-
-
 
     // EBAY SCRIPT ABOVE
     //========================================================================================================
