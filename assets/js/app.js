@@ -85,7 +85,7 @@ $("document").ready(function () {
             ebayComic = ebayComic.replace(/,/g, '');
             console.log(ebayComic);
       
-            ebayQueryUrl = "http://open.api.ebay.com/shopping?version=515&callname=FindItemsAdvanced&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords="+ebayComic+"&ItemSort=BestMatch&SortOrder=Descending&CategoryID=1&responseencoding=JSON&MaxEntries=2";
+            ebayQueryUrl = "http://open.api.ebay.com/shopping?version=515&callname=FindItemsAdvanced&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords="+ebayComic+"&ItemSort=BestMatch&SortOrder=Descending&CategoryID=1&responseencoding=JSON&MaxEntries=3";
 
         
 
@@ -114,17 +114,17 @@ $("document").ready(function () {
         callAdvanced();
         
         
-        for(let i = 1; i < 3; i++){
-            if(i === 1){
-        ebayQueryUrlLeft = "http://open.api.ebay.com/shopping?version=515&callname=FindItems&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchOne + "+comics&ItemSort=PricePlusShipping&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=3";
-        let target = $("#ebayResultsLeft");
-        callSimple(ebayQueryUrlLeft, target);
-        } else {
-        ebayQueryUrlRight = "http://open.api.ebay.com/shopping?version=515&callname=FindItems&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchTwo + "+comics&ItemSort=PricePlusShipping&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=3";
-        let target = $("#ebayResultsRight");
-        callSimple(ebayQueryUrlRight, target);
-            }
-        };
+        // for(let i = 1; i < 3; i++){
+        //     if(i === 1){
+        // ebayQueryUrlLeft = "http://open.api.ebay.com/shopping?version=515&callname=FindItems&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchOne + "+comics&ItemSort=PricePlusShipping&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=3";
+        // let target = $("#ebayResultsLeft");
+        // callSimple(ebayQueryUrlLeft, target);
+        // } else {
+        // ebayQueryUrlRight = "http://open.api.ebay.com/shopping?version=515&callname=FindItems&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchTwo + "+comics&ItemSort=PricePlusShipping&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=3";
+        // let target = $("#ebayResultsRight");
+        // callSimple(ebayQueryUrlRight, target);
+        //     }
+        // };
 
         setTimeout(() => {
             $(".hideMe").css("display", "none");
@@ -168,16 +168,16 @@ $("document").ready(function () {
     function DisplayEbayResultsSimple(test, target) {
         for (let i = 0; i < test.Item.length; i++) {
             let div = $("<div>");
-            div.addClass("row");
-            div.addClass("ebayCharacterRow");
-            div.addClass("ebayRow");
-            // div.css("margin", "20px");
+            // div.addClass("row");
+            // div.addClass("ebayCharacterRow");
+            // div.addClass("ebayRow");
+            div.css("margin", "20px");
             let img = $("<img>");
             img.attr("src", test.Item[i].GalleryURL);
-            // img.css("width", "150px");
-            // img.css("height", "150px");
-            // img.css("float", "left");
-            // img.css("margin-right", "10px");
+            img.css("width", "150px");
+            img.css("height", "100%");
+            img.css("float", "left");
+            img.css("margin-right", "10px");
             let title = $('<h4>');
             title.html(test.Item[i].Title)
             let link = $("<a>BUY</a>");
@@ -185,13 +185,14 @@ $("document").ready(function () {
             link.addClass("btn");
             link.addClass("btn-success");
             let bids = $('<div>');
-            bids.html("Total Bids: " + test.Item[i].BidCount + "<br><br>");
+            bids.html("Total Bids: " + test.Item[i].BidCount);
             let price = $("<h2>");
             price.text("$" + test.Item[i].ConvertedCurrentPrice.Value);
             let ebayLogo = $("<img>");
             ebayLogo.attr("src", "assets/images/ebayLogo.png");
-            // ebayLogo.css("height", "25px");
-            // ebayLogo.css("float", "right");
+            ebayLogo.css("height", "25px");
+            ebayLogo.css("float", "right");
+            // ebayLogo.css("margin-top", "21%");
             div.append(img, title, bids, price, ebayLogo, link);
             target.append(div);
         };
@@ -201,16 +202,14 @@ $("document").ready(function () {
         if (test.TotalItems > 0) {
             for (let i = 0; i < test.SearchResult[0].ItemArray.Item.length; i++) {
                 let div = $("<div>");
-                div.addClass("row");
                 div.addClass("ebayRow");
-                // div.addClass("ebayComicListing");
                 div.css("margin", "20px");
                 let img = $("<img>");
                 img.addClass("ECLimg");
                 img.attr("src", test.SearchResult[0].ItemArray.Item[i].GalleryURL);
-                img.attr("href", test.SearchResult[0].ItemArray.Item[i].ViewItemURLForNaturalSearch);
+                // img.attr("href", test.SearchResult[0].ItemArray.Item[i].ViewItemURLForNaturalSearch);
                 img.css("width", "150px");
-                img.css("height", "200px");
+                img.css("height", "100%");
                 img.css("float", "left");
                 img.css("margin-right", "10px");
                 let title = $('<h4>');
@@ -227,11 +226,13 @@ $("document").ready(function () {
                 let price = $("<h2>");
                 price.addClass("ECLprice");
                 price.text("$" + test.SearchResult[0].ItemArray.Item[i].ConvertedCurrentPrice.Value);
-                let ebayLogo = $("<div>");
+                let ebayLogo = $("<img>");
                 ebayLogo.css("height", "65px");
-                ebayLogo.css("width", "100px");
+                // ebayLogo.css("width", "100px");
                 ebayLogo.addClass("ECLlogo");
-                ebayLogo.css("background-image", "url(assets/images/ebayLogo.png)");
+                ebayLogo.attr("src", "assets/images/ebayLogo.png");
+                ebayLogo.css("float", "right");
+                // ebayLogo.css("margin-top", "10%");
                 $('#ebayResults').append(div);
                 div.append(img, title, bids, price, link, ebayLogo);
             };
