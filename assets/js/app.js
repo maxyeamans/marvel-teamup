@@ -28,27 +28,6 @@ $("document").ready(function () {
 
     $("#get-info").on("click", function (event) {
 
-
-        // Empty current array
-        arrayCombinedIDs = [];
-        incrementer = 1;
-
-        $(".active").each(function () {
-            var numID = $(this).attr("id-number");
-            var urlThumbnail;
-            var strName;
-            arrayCombinedIDs.push(numID);
-            console.log(numID);
-            // urlThumbnail = getThumbnail(numID);
-            // strName = getName(numID);
-            $("#display-image-" + incrementer).attr("src", urlThumbnail);
-            $("#display-name-" + incrementer).text(strName);
-            incrementer++;
-
-
-
-        });
-
         strCombinedIDs = arrayCombinedIDs.toString();
         console.log(strCombinedIDs);
 
@@ -404,8 +383,8 @@ $("document").ready(function () {
 
         // Iterate through the selected characters
         $(".active").each(function () {
-            // ? Do we want to declare these before using them? Or declare/set on the same line?
 
+            // Variables used in the loop
             var numID = $(this).attr("id-number");
             var urlThumbnail;
             var strName;
@@ -413,16 +392,25 @@ $("document").ready(function () {
             // Push the character ID number to the array
             arrayCombinedIDs.push(numID);
             console.log(numID);
+            // Set the variables used in the loop
             urlThumbnail = getThumbnailByID(numID);
             strName = getNameByID(numID);
-            // Using the incrementer to get the display div here. Eventually, I want to allow the user
-            // to choose how many characters they'll lookup, and dynamically generate display divs.
-            $("#display-image-" + incrementer).attr("src", urlThumbnail);
-            // $('#display-image-' + incrementer).velocity("bounceIn");
-            // ? What does this do?
-            $("#display-name-" + incrementer).text(strName);
-            // $('#display-name' + incrementer).velocity("bounceIn");
-            // ? What does this do?
+            // Dynamically generate the teamup div
+            let teamupDiv = $("<div>").addClass("col-6");
+            let teamupHeader = $("<h4>").text(strName);
+            teamupHeader.attr({
+                class : "text-center",
+                id : "display-name-" + incrementer
+            });
+            let teamupImg = $("<img>");
+            teamupImg.attr({
+                src: urlThumbnail,
+                class: "img-fluid",
+                id: "display-name-" + incrementer
+            });
+            teamupDiv.append(teamupHeader, teamupImg);
+            $("#chosen-teamup").append(teamupDiv);
+
             incrementer++;
         });
 
