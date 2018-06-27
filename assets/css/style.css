@@ -1,0 +1,114 @@
+html{
+    background: grey;
+}    
+
+/* Is this the font we want to use? */
+/* * {
+    font-family: 'Marvel', sans-serif;
+} */
+
+/* Need to decide on body style */
+body{
+    background: grey;
+}    
+body {
+    background-color: black;
+    color: white;
+}    
+
+/* Is there a way to get the background pic width to not compress as the screen width goes down? */
+.jumbotron{
+    background-image: url("../images/jumbo.jpg");
+    background-size: auto;
+    background-position: center;
+    background-position-y: -235px;
+    color: white;
+    border-bottom: 2px solid darkred;
+    background-color: red;
+}    
+
+/* Commenting this out til needed */
+/* #display-teamup{
+    visibility: hidden;
+}     */
+
+.ebayRow{
+    border-radius: 15px;
+    padding-bottom: 15px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    padding: 10px;
+    box-shadow: 0px 0px 20px 0px grey;
+}   
+
+.img-thumbnail {
+    padding: .35rem !important;
+}    
+
+.active {
+    background-color: rgb(66, 115, 171);
+}
+
+.modal-title {
+    color: red;
+}
+
+.modal-body {
+    color: red;
+}
+
+.card-body {
+    background-color: black;
+}
+
+.card-header {
+    background-color: red;
+}
+
+.img-thumbnail {
+    padding: .35rem !important;
+}
+
+.active {
+    background-color: rgb(66, 115, 171);
+}
+
+@media screen and (max-width: 1200px) {
+    /* LARGE */
+    .ebayComicRow{
+        height: 225px !important;
+    }
+   
+}
+
+@media screen and (max-width: 991px) {
+   /* MEDIUM */
+   .ebayComicRow{
+        height: 250px !important;
+   }
+   .ebayCharacterRow{
+        height: 375px !important;
+    }
+   
+}
+
+@media screen and (max-width: 767px) {
+   /* SMALL */
+   .ebayComicRow{
+    height: 300px !important;
+}
+.ebayCharacterRow{
+    height: 500px !important;
+}
+   
+}
+
+@media screen and (max-width: 575px) {
+   /* EXTRA SMALL */
+   .ebayComicRow{
+    height: 350px !important;
+}
+.ebayCharacterRow{
+    height: 400px !important;
+}
+}
