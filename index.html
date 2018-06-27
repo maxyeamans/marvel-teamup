@@ -120,108 +120,62 @@
             </div>
         </div>
         <!-- End Jeremy's modal -->
-
-
-        <!-- begin max teamup display area -->
-        <!-- 
-        <div class="mt-4" id="display-teamup">
-            <div class="card">
-                <div class="card-header">
-                    Your Chosen Teamup
-                    <button type="button" class="btn btn-secondary btn-sm float-right" id="get-info" disabled>Get Info</button>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-6">
-                            <img src="http://i.annihil.us/u/prod/marvel/i/mg/2/60/537bcaef0f6cf.jpg" class="img-fluid" id="display-image-1">
-                            <p class="text-center" id="display-name-1">Wolverine</p>
-                        </div>
-                        <div class="col-6">
-                            <img src="http://i.annihil.us/u/prod/marvel/i/mg/3/50/537ba56d31087.jpg" class="img-fluid" id="display-image-2">
-                            <p class="text-center" id="display-name-2">Captain America</p>
-                        </div>
-                    </div>
-                    <div id="display-teamup-info">
-                        <p>First team up: 
-                            <span id="display-teamup-issue"></span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        -->
-        <!-- end max teamup display area -->
     </div>
 
+    <div class="row">
+        <div class="col-lg-4">
+            <h3 id=firstNameCollab></h3>
+            <div id="firstCharacterCollab"></div>
+        </div>
+        <div class="col-lg-4">
+            <h3 id=secondNameCollab></h3>
+            <div id="secondCharacterCollab"></div>
+        </div>
+    </div>
+    <div class="row" id="comicPictures">
+        <div id="notFound"></div>
+        <div class="col-lg-3 comics" id="comic1"></div>
+        <div class="col-lg-3 comics" id="comic2"></div>
+        <div class="col-lg-3 comics" id="comic3"></div>
+    </div>
+    </div>
+
+    <!-- EBAY RESULTS WILL BE DISPLAYED BELOW -->
     <div class="container">
-        <!-- EBAY RESULTS HERE -->
         <div class="row">
             <div class="col-sm-1">
-
             </div>
             <div id="ebayResults" class="col-sm-10">
-
             </div>
             <div class="col-sm-1">
-
             </div>
-
         </div>
         <div class="row">
-            <!-- <div class="col-sm-1">
-
-            </div> -->
-            <div id="ebayResultsLeft" class="col-sm-4">
-
+            <div id="ebayResultsLeft" class="col-sm-6">
+                <div id="firstName"></div>
             </div>
-            <div class="col-sm-4">
-
-            </div>
-            <div id="ebayResultsRight" class="col-sm-4">
-
-            </div>
-            <!-- <div class="col-sm-1">
-
-            </div> -->
-
-        </div>
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h3 id=firstNameCollab></h3>
-                <div id="firstCharacterCollab"></div>
-            </div>
-            <div class="col-lg-4">
-                <h3 id=secondNameCollab></h3>
-                <div id="secondCharacterCollab"></div>
+            <div id="ebayResultsRight" class="col-sm-6">
+                <div id="secondName"></div>
             </div>
         </div>
-        <div class="row" id="comicPictures">
-            <div id="notFound"></div>
-            <div class="col-lg-3 comics" id="comic1"></div>
-            <div class="col-lg-3 comics" id="comic2"></div>
-            <div class="col-lg-3 comics" id="comic3"></div>
-        </div>
-    </div>
 
 
-    <!--JQUERY-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <!--JQUERY-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-    <!--Bootstrap for Modals-->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-        crossorigin="anonymous"></script>
+        <!--Bootstrap for Modals-->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
 
-    <!--VELOCITY-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/2.0.5/velocity.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/2.0.5/velocity.ui.min.js"></script>
+        <!--VELOCITY-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/2.0.5/velocity.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/2.0.5/velocity.ui.min.js"></script>
 
-    <!--MOMENT-->
-    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+        <!--MOMENT-->
+        <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
 
-    <!--CUSTOM SCRIPT-->
-    <script src="assets/js/app.js"></script>
-    <script src="assets/js/test.js"></script>
+        <!--CUSTOM SCRIPT-->
+        <script src="assets/js/app.js"></script>
 </body>
 
 </html>
