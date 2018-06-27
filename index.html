@@ -5,15 +5,18 @@
         crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
     <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase.js"></script>
-
-
+    <link href="https://fonts.googleapis.com/css?family=Marvel" rel="stylesheet">
 </head>
 
+
 <body>
+
     <div class="jumbotron">
-        <h3>This is a basic Test for Input</h3>
+        <h3 style="font-size: 50pt; font-weight:bold" class="text-center">MARVEL TEAMUP COMIC SEARCH</h3>
     </div>
+
     <div class="container">
+        <!-- Begin character search -->
         <div class="row">
             <div class="col-lg-4">
                 <!-- The form needs an id so it can be reset on submit -->
@@ -30,7 +33,97 @@
         </div>
         <!-- end button display area -->
 
-        <!-- begin teamup display area -->
+        <!-- begin jason teamup display area -->
+        <div class="mt-4" id="display-teamup">
+            <div class="card">
+                <div class="card-header">
+                    <div class="text-center">
+                        <h2>Your Chosen Teamup</h2>
+                    </div>
+                    <button type="button" class="btn btn-secondary btn-sm float-right" id="get-info" disabled>Get Info</button>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <h4 class="text-center" id="display-name-1">Wolverine</h4>
+                            <img src="http://i.annihil.us/u/prod/marvel/i/mg/2/60/537bcaef0f6cf.jpg" class="img-fluid" id="display-image-1">
+                        </div>
+
+                        <div class="col-6">
+                            <h4 class="text-center" id="display-name-2">Captain America</h4>
+                            <img src="http://i.annihil.us/u/prod/marvel/i/mg/3/50/537ba56d31087.jpg" class="img-fluid" id="display-image-2">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div id="comic-search-result" class="card-header">Your Search Results!</div>
+                    <div id="display-teamup-info" class="row">
+
+                        <div class="col-4">
+                            <div class='comics' id="comic1"></div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class='comics' id="comic2"></div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class='comics' id="comic3"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end teamup display area -->
+
+
+        <!-- Begin Jason's modal -->
+        <div id="noCharacterModal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">ERROR!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Jason's modal -->
+
+        <!-- Begin Jeremy's modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="Character Not Found" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Character Not Found</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        This character is not in the Marvel Universe
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Jeremy's modal -->
+
+
+        <!-- begin max teamup display area -->
+        <!-- 
         <div class="mt-4" id="display-teamup">
             <div class="card">
                 <div class="card-header">
@@ -39,7 +132,6 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <!-- The images in here are placeholders. They will eventually be dynamically added later with a Velocity transition -->
                         <div class="col-6">
                             <img src="http://i.annihil.us/u/prod/marvel/i/mg/2/60/537bcaef0f6cf.jpg" class="img-fluid" id="display-image-1">
                             <p class="text-center" id="display-name-1">Wolverine</p>
@@ -57,43 +149,65 @@
                 </div>
             </div>
         </div>
-        <!-- end teamup display area -->
+        -->
+        <!-- end max teamup display area -->
     </div>
-    
+
+    <div class="row">
+        <div class="col-lg-4">
+            <h3 id=firstNameCollab></h3>
+            <div id="firstCharacterCollab"></div>
+        </div>
+        <div class="col-lg-4">
+            <h3 id=secondNameCollab></h3>
+            <div id="secondCharacterCollab"></div>
+        </div>
+    </div>
+    <div class="row" id="comicPictures">
+        <div id="notFound"></div>
+        <div class="col-lg-3 comics" id="comic1"></div>
+        <div class="col-lg-3 comics" id="comic2"></div>
+        <div class="col-lg-3 comics" id="comic3"></div>
+    </div>
+    </div>
+
+    <!-- EBAY RESULTS WILL BE DISPLAYED BELOW -->
     <div class="container">
-        <!-- EBAY RESULTS HERE -->
         <div class="row">
             <div class="col-sm-1">
-                
             </div>
             <div id="ebayResults" class="col-sm-10">
-
             </div>
             <div class="col-sm-1">
-                
             </div>
-
         </div>
         <div class="row">
-            
-            <div id="ebayResultsLeft"  class="col-xs-5">
-                
+            <div id="ebayResultsLeft" class="col-sm-6">
+                <div id="firstName"></div>
             </div>
-            <div id="ebayResultsRight" class="col-xs-2">
-                
-                </div>
-            
-            <div id="ebayResultsRight" class="col-xs-5">
-                
+            <div id="ebayResultsRight" class="col-sm-6">
+                <div id="secondName"></div>
             </div>
-            
-
         </div>
-    </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="assets/js/app.js"></script>
-    
+
+        <!--JQUERY-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <!--Bootstrap for Modals-->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+        <!--VELOCITY-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/2.0.5/velocity.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/2.0.5/velocity.ui.min.js"></script>
+
+        <!--MOMENT-->
+        <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+
+        <!--CUSTOM SCRIPT-->
+        <script src="assets/js/app.js"></script>
+        <script src="assets/js/test.js"></script>
 </body>
 
 </html>
