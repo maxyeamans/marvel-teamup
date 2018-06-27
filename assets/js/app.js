@@ -10,6 +10,8 @@ $("document").ready(function () {
     };
     firebase.initializeApp(config);
 
+    var database = firebase.database();
+
 
     console.log('Ready');
     var ebayQueryUrl;
@@ -127,12 +129,12 @@ $("document").ready(function () {
         });
     });
     //========================================================================================================  
-    let ebaySearchComic;
+    /* let ebaySearchComic;
     let ebaySearchOne;
     let ebaySearchTwo;
     // let ebayQueryUrl;
     let ebaySearchCount = 0;
-    // let ebayComic;
+    // let ebayComic; */
 
     function callAdvanced() {
         $.ajax({
@@ -370,7 +372,7 @@ $("document").ready(function () {
             console.log(activeElements);
 
             // TODO: see if these conditionals can be wrapped into the if (activeElements == 2) conditional below.
-            
+
 
         }
 
@@ -437,42 +439,62 @@ $("document").ready(function () {
         var strCollabTitle1;
         var numCollabId1;
         var imgCollabThumb1;
-        
+
         var strCollabTitle2;
         var numCollabId2;
         var imgCollabThumb2;
-        
-        
+
+
         var strCollabTitle3;
         var numCollabId3;
         var imgCollabThumb3;
-        
-        
+
+        //Takes the year away in the search for comic
+        function trimYearFromComic(comic) {
+            var openParenIndex;
+            var closeParenIndex;
+
+            console.log("Pre-trim", comic);
+
+            openParenIndex = comic.indexOf("(") - 1;
+            closeParenIndex = comic.indexOf(")") + 1;
+
+            var splitComic = comic.split("");
+            splitComic.splice(openParenIndex, closeParenIndex - openParenIndex);
+            comic = splitComic.join("");
+            console.log("Pre-trim", comic);
+
+            return comic;
+        };
+
 
         var teamupQueryURL = "https://gateway.marvel.com/v1/public/comics?format=comic&formatType=comic&noVariants=true&dateRange=1960-01-01%2C" + strTheDate + "&sharedAppearances=" + strCombinedIDs + "&orderBy=focDate%2ConsaleDate&ts=1&apikey=4287eee52c27f292e44137f86910da4a&hash=3f4394a993af3110f684ed8d0f8db35d";
         $.ajax({
             url: teamupQueryURL,
             method: "GET",
-            success: function() {
+            success: function () {
                 $('.comic-search-result').text("Now Searching...");
             },
         }).then(function (teamup) {
 
             if (teamup.data.total == 0) {
-                $('.comics').velocity("fadeOut");
+                $('.comicDisplay').velocity("fadeOut");
                 var notFound = function () {
-                    $(".comics").empty();
+                    // Jason's code for clearing out these divs
+                    $('.comicTitle').empty();
+                    $('.comicDisplay').empty();
                     $('#comic-search-result').text("No Comics Found!");
-                    // $('.modal-body').text("CANNOT FIND ANY COMICS! SORRY!");
-                    // $('#noCharacterModal').modal('show');
-                    $('#exampleModal').modal('show');
+                    $('.modal-body').text("CANNOT FIND ANY COMICS! SORRY!");
+                    $('#noCharacterModal').modal('show');
+                    $('#ebayResultsRight').empty();
+                    $('#ebayResultsLeft').empty();
+                    $('#ebayResults').empty();
 
                     if ($('.img-thumbnail').hasClass("active")) {
                         $('.img-thumbnail').removeClass("active");
                         $('.img-thumbnail').addClass("inactive");
                         activeElements = 0;
                         $(".inactive").css({ opacity: 1 });
-
                     }
                 }
                 setTimeout(notFound, 1200);
@@ -498,46 +520,59 @@ $("document").ready(function () {
                 console.log("Comic 2 info: ", result[1]);
                 console.log("Comic 3 info: ", result[2]);
 
-                strCollabTitle1 = result[0].title;
+
+                // TODO: limit the API query to 3 results, write jQuery function to iterate through the array to generate code similar to below
+                strCollabTitle1 = trimYearFromComic(result[0].title);
                 numCollabId1 = result[0].id;
                 imgCollabThumb1 = result[0].thumbnail.path + "." + result[0].thumbnail.extension;
 
                 console.log(strCollabTitle1);
                 console.log(imgCollabThumb1);
 
-                $('#comic1').html("<img style='width:250px; height:300px' src=" + imgCollabThumb1 + "></img>");
-                $('#comic1').velocity("bounceIn");
+                $('#comicTitle1').text(strCollabTitle1);
+                $('#comicTitle1').velocity("bounceIn");
+
+                $('#comicCover1').html("<img class='comics mx-auto d-block img-fluid' src=" + imgCollabThumb1 + "></img>");
+                $('#comicCover1').velocity("bounceIn");
 
 
 
                 if (typeof result[1] != "undefined") {
-                    strCollabTitle2 = teamup.data.results[1].title;
-                    numCollabId2 = teamup.data.results[1].id;
-                    imgCollabThumb2 = teamup.data.results[1].thumbnail.path + "." + teamup.data.results[1].thumbnail.extension;
+                    strCollabTitle2 = trimYearFromComic(result[1].title);
+                    numCollabId2 = result[1].id;
+                    imgCollabThumb2 = result[1].thumbnail.path + "." + result[1].thumbnail.extension;
                     console.log(strCollabTitle2);
                     console.log(imgCollabThumb2);
 
+                    $('#comicTitle2').text(strCollabTitle2);
+                    $('#comicTitle2').velocity("bounceIn");
 
-                    $('#comic2').html("<img style='width:250px; height:300px' src=" + imgCollabThumb2 + "></img>");
-                    $('#comic2').velocity("bounceIn");
+
+                    $('#comicCover2').html("<img class='comics mx-auto d-block img-fluid' src=" + imgCollabThumb2 + "></img>");
+                    $('#comicCover2').velocity("bounceIn");
                 }
                 else {
-                    $('#comic2').empty();
+                    $('#comicTitle2').empty();
+                    $('#comicCover2').empty();
                 }
 
                 if (typeof result[2] != "undefined") {
-                    strCollabTitle3 = teamup.data.results[2].title;
-                    numCollabId3 = teamup.data.results[2].id;
-                    imgCollabThumb3 = teamup.data.results[2].thumbnail.path + "." + teamup.data.results[2].thumbnail.extension;
+                    strCollabTitle3 = trimYearFromComic(result[2].title);
+                    numCollabId3 = result[2].id;
+                    imgCollabThumb3 = result[2].thumbnail.path + "." + result[2].thumbnail.extension;
                     console.log(strCollabTitle3);
                     console.log(imgCollabThumb3);
 
-                    $('#comic3').html("<img style='float:left; width:250px; height:300px' class='img-fluid' src=" + imgCollabThumb3 + "></img>");
-                    $('#comic3').velocity("bounceIn");
+                    $('#comicTitle3').text(strCollabTitle3);
+                    $('#comicTitle3').velocity("bounceIn");
+
+                    $('#comicCover3').html("<img class='comics mx-auto d-block img-fluid'src=" + imgCollabThumb3 + "></img>");
+                    $('#comicCover3').velocity("bounceIn");
 
                 }
                 else {
-                    $('#comic3').empty();
+                    $('#comicTitle3').empty();
+                    $('#comicCover3').empty();
                 }
             }
         });
@@ -575,12 +610,12 @@ $("document").ready(function () {
                 $(".ebayRow").addClass("hideMe");
                 callAdvanced();
 
-                    for (var i = 1; i < 3; i++) {
+                for (var i = 1; i < 3; i++) {
                     if (i === 1) {
                         ebayQueryUrlLeft = "http://open.api.ebay.com/shopping?version=515&callname=FindItems&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchOne + "+comics&ItemSort=PricePlusShipping&CategoryID=63&responseencoding=JSON&MaxEntries=3";
                         var target = $("#ebayResultsLeft");
                         callSimple(ebayQueryUrlLeft, target);
-                        $("#firstName").html("<h3>" +ebaySearchOne + "</h3>");
+                        $("#firstName").html("<h3>" + ebaySearchOne + "</h3>");
                         $("#firstName").css("text-align", "center");
 
 
@@ -588,7 +623,7 @@ $("document").ready(function () {
                         ebayQueryUrlRight = "http://open.api.ebay.com/shopping?version=515&callname=FindItems&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchTwo + "+comics&ItemSort=PricePlusShipping&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=3";
                         var target = $("#ebayResultsRight");
                         callSimple(ebayQueryUrlRight, target);
-                        $("#secondName").html("<h3>" +ebaySearchTwo + "</h3>");
+                        $("#secondName").html("<h3>" + ebaySearchTwo + "</h3>");
                         $("#secondName").css("text-align", "center");
                     }
                 };
