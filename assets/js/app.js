@@ -28,31 +28,10 @@ $("document").ready(function () {
 
     $("#get-info").on("click", function (event) {
 
-
-        // Empty current array
-        arrayCombinedIDs = [];
-        incrementer = 1;
-
-        $(".active").each(function () {
-            var numID = $(this).attr("id-number");
-            var urlThumbnail;
-            var strName;
-            arrayCombinedIDs.push(numID);
-            console.log(numID);
-            // urlThumbnail = getThumbnail(numID);
-            // strName = getName(numID);
-            $("#display-image-" + incrementer).attr("src", urlThumbnail);
-            $("#display-name-" + incrementer).text(strName);
-            incrementer++;
-
-
-
-        });
-
         strCombinedIDs = arrayCombinedIDs.toString();
         console.log(strCombinedIDs);
 
-        var teamupQueryURL = "https://gateway.marvel.com/v1/public/comics?format=comic&formatType=comic&noVariants=true&dateRange=1960-01-01%2C2018-06-21&sharedAppearances=" + strCombinedIDs + "&orderBy=focDate%2ConsaleDate&limit=1&ts=1&apikey=4287eee52c27f292e44137f86910da4a&hash=3f4394a993af3110f684ed8d0f8db35d";
+        var teamupQueryURL = "https://gateway.marvel.com/v1/public/comics?format=comic&formatType=comic&noVariants=true&dateRange=1960-01-01%2C2018-06-21&sharedAppearances=" + strCombinedIDs + "&orderBy=onsaleDate&limit=1&ts=1&apikey=4287eee52c27f292e44137f86910da4a&hash=3f4394a993af3110f684ed8d0f8db35d";
         $.ajax({
             url: teamupQueryURL,
             method: "GET"
@@ -398,14 +377,15 @@ $("document").ready(function () {
 
     $("#get-info").on("click", function (event) {
 
-        // Empty the array if a comparison has already been done
+        // Empty the array and chosen-teamup div if a comparison has already been done
         arrayCombinedIDs = [];
         incrementer = 1;
+        $("#chosen-teamup").empty();
 
         // Iterate through the selected characters
         $(".active").each(function () {
-            // ? Do we want to declare these before using them? Or declare/set on the same line?
 
+            // Variables used in the loop
             var numID = $(this).attr("id-number");
             var urlThumbnail;
             var strName;
@@ -413,16 +393,25 @@ $("document").ready(function () {
             // Push the character ID number to the array
             arrayCombinedIDs.push(numID);
             console.log(numID);
+            // Set the variables used in the loop
             urlThumbnail = getThumbnailByID(numID);
             strName = getNameByID(numID);
-            // Using the incrementer to get the display div here. Eventually, I want to allow the user
-            // to choose how many characters they'll lookup, and dynamically generate display divs.
-            $("#display-image-" + incrementer).attr("src", urlThumbnail);
-            // $('#display-image-' + incrementer).velocity("bounceIn");
-            // ? What does this do?
-            $("#display-name-" + incrementer).text(strName);
-            // $('#display-name' + incrementer).velocity("bounceIn");
-            // ? What does this do?
+            // Dynamically generate the teamup div
+            let teamupDiv = $("<div>").addClass("col-6");
+            let teamupHeader = $("<h4>").text(strName);
+            teamupHeader.attr({
+                class : "text-center",
+                id : "display-name-" + incrementer
+            });
+            let teamupImg = $("<img>");
+            teamupImg.attr({
+                src: urlThumbnail,
+                class: "img-fluid",
+                id: "display-name-" + incrementer
+            });
+            teamupDiv.append(teamupHeader, teamupImg);
+            $("#chosen-teamup").append(teamupDiv);
+
             incrementer++;
         });
 
@@ -435,21 +424,7 @@ $("document").ready(function () {
         var formatDate = "YYYY-MM-DD";
         var strTheDate = moment().format(formatDate);
 
-        // Variabales to hold teamup comic info
-        var strCollabTitle1;
-        var numCollabId1;
-        var imgCollabThumb1;
-
-        var strCollabTitle2;
-        var numCollabId2;
-        var imgCollabThumb2;
-
-
-        var strCollabTitle3;
-        var numCollabId3;
-        var imgCollabThumb3;
-
-        //Takes the year away in the search for comic
+        // Function that removes the start year from the returned comic title
         function trimYearFromComic(comic) {
             var openParenIndex;
             var closeParenIndex;
@@ -468,7 +443,7 @@ $("document").ready(function () {
         };
 
 
-        var teamupQueryURL = "https://gateway.marvel.com/v1/public/comics?format=comic&formatType=comic&noVariants=true&dateRange=1960-01-01%2C" + strTheDate + "&sharedAppearances=" + strCombinedIDs + "&orderBy=focDate%2ConsaleDate&ts=1&apikey=4287eee52c27f292e44137f86910da4a&hash=3f4394a993af3110f684ed8d0f8db35d";
+        var teamupQueryURL = "https://gateway.marvel.com/v1/public/comics?format=comic&formatType=comic&noVariants=true&dateRange=1960-01-01%2C" + strTheDate + "&sharedAppearances=" + strCombinedIDs + "&orderBy=onsaleDate&ts=1&apikey=4287eee52c27f292e44137f86910da4a&hash=3f4394a993af3110f684ed8d0f8db35d";
         $.ajax({
             url: teamupQueryURL,
             method: "GET",
@@ -481,9 +456,8 @@ $("document").ready(function () {
                 $('.comicDisplay').velocity("fadeOut");
                 var notFound = function () {
                     // Jason's code for clearing out these divs
-                    $('.comicTitle').empty();
-                    $('.comicDisplay').empty();
                     $('#comic-search-result').text("No Comics Found!");
+                    $('#display-teamup-info').empty();
                     $('.modal-body').text("CANNOT FIND ANY COMICS! SORRY!");
                     $('#noCharacterModal').modal('show');
                     $('#ebayResultsRight').empty();
@@ -502,82 +476,58 @@ $("document").ready(function () {
             }
             else {
 
-                $('.comics').empty();
-                //just to shorten the code
+                $('#display-teamup-info').empty();
+                
+                // Shortcut variable to hold all results
                 var result = teamup.data.results;
+                console.log("Full Results:", result);
+                // Array to hold first 3 results
+                var teamups = [];
+                
+                // Loop to create array with up to 3 of the first results
+                for (var i = 0; i < 3; i++) {
+                    if( typeof(result[i]) == "object") {
+                        teamups.push(result[i]);
+                    };
+                };
+                console.log("Teamup results:", teamups);
+
                 $('#comic-search-result').text("Comics found: " + result.length);
 
+                // Array function to add up to 3 of the comics to DOM
+                // TODO: add the Velocity effects to the pics as they come in
+                teamups.forEach( function( teamupItem, index) {
+                    // Variables to hold each item's unique info
+                    var teamupTitle = trimYearFromComic( teamupItem.title );
+                    var teamupCover = teamupItem.thumbnail.path + "." + teamupItem.thumbnail.extension;
 
-
-                //This makes the search limited to 3 comics!
-                $.each(result, function (key, value) {
-                    return key < 2;
+                    // Create the column
+                    var divCol = $("<div>").addClass("col-sm-4 col-lg-3");
+                    // Create the title
+                    var divTitle = $("<div>").attr({
+                        class: "comicTitle text-center",
+                        id: "comicTitle" + (index + 1)
+                    });
+                    divTitle.text(teamupTitle);
+                    // Create the cover
+                    var divCover = $("<div>").attr({
+                        class: "comicDisplay",
+                        id: "comicCover" + (index + 1)
+                    });
+                    var imgCover = $("<img>").attr({
+                        class: "comics mx-auto d-block img-fluid",
+                        src: teamupCover
+                    });
+                    // Put it all together now
+                    divCover.append(imgCover);
+                    divCol.append(divTitle, divCover);
+                    $("#display-teamup-info").append(divCol);
+                    imgCover.velocity("bounceIn");
                 });
-
-
-                //console logs our results and if they exist
-                console.log("Comic 1 info: ", result[0]);
-                console.log("Comic 2 info: ", result[1]);
-                console.log("Comic 3 info: ", result[2]);
-
-
-                // TODO: limit the API query to 3 results, write jQuery function to iterate through the array to generate code similar to below
-                strCollabTitle1 = trimYearFromComic(result[0].title);
-                numCollabId1 = result[0].id;
-                imgCollabThumb1 = result[0].thumbnail.path + "." + result[0].thumbnail.extension;
-
-                console.log(strCollabTitle1);
-                console.log(imgCollabThumb1);
-
-                $('#comicTitle1').text(strCollabTitle1);
-                $('#comicTitle1').velocity("bounceIn");
-
-                $('#comicCover1').html("<img class='comics mx-auto d-block img-fluid' src=" + imgCollabThumb1 + "></img>");
-                $('#comicCover1').velocity("bounceIn");
-
-
-
-                if (typeof result[1] != "undefined") {
-                    strCollabTitle2 = trimYearFromComic(result[1].title);
-                    numCollabId2 = result[1].id;
-                    imgCollabThumb2 = result[1].thumbnail.path + "." + result[1].thumbnail.extension;
-                    console.log(strCollabTitle2);
-                    console.log(imgCollabThumb2);
-
-                    $('#comicTitle2').text(strCollabTitle2);
-                    $('#comicTitle2').velocity("bounceIn");
-
-
-                    $('#comicCover2').html("<img class='comics mx-auto d-block img-fluid' src=" + imgCollabThumb2 + "></img>");
-                    $('#comicCover2').velocity("bounceIn");
-                }
-                else {
-                    $('#comicTitle2').empty();
-                    $('#comicCover2').empty();
-                }
-
-                if (typeof result[2] != "undefined") {
-                    strCollabTitle3 = trimYearFromComic(result[2].title);
-                    numCollabId3 = result[2].id;
-                    imgCollabThumb3 = result[2].thumbnail.path + "." + result[2].thumbnail.extension;
-                    console.log(strCollabTitle3);
-                    console.log(imgCollabThumb3);
-
-                    $('#comicTitle3').text(strCollabTitle3);
-                    $('#comicTitle3').velocity("bounceIn");
-
-                    $('#comicCover3').html("<img class='comics mx-auto d-block img-fluid'src=" + imgCollabThumb3 + "></img>");
-                    $('#comicCover3').velocity("bounceIn");
-
-                }
-                else {
-                    $('#comicTitle3').empty();
-                    $('#comicCover3').empty();
-                }
-            }
+            };
         });
 
-        var teamupQueryURL = "https://gateway.marvel.com/v1/public/comics?format=comic&formatType=comic&noVariants=true&dateRange=1960-01-01%2C2018-06-21&sharedAppearances=" + strCombinedIDs + "&orderBy=focDate%2ConsaleDate&limit=1&ts=1&apikey=4287eee52c27f292e44137f86910da4a&hash=3f4394a993af3110f684ed8d0f8db35d";
+        var teamupQueryURL = "https://gateway.marvel.com/v1/public/comics?format=comic&formatType=comic&noVariants=true&dateRange=1960-01-01%2C2018-06-21&sharedAppearances=" + strCombinedIDs + "&orderBy=onsaleDate&limit=1&ts=1&apikey=4287eee52c27f292e44137f86910da4a&hash=3f4394a993af3110f684ed8d0f8db35d";
         $.ajax({
             url: teamupQueryURL,
             method: "GET"
