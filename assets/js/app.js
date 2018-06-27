@@ -491,16 +491,27 @@ $("document").ready(function () {
             else {
 
                 $('.comics').empty();
-                //just to shorten the code
+                
+                // Shortcut variable to hold all results
                 var result = teamup.data.results;
+                console.log("Full Results:", result);
+                // Array to hold first 3 results
+                var teamups = [];
+                
+                // Loop to create array with first 3 results
+                for (var i = 0; i < 3; i++) {
+                    if( typeof(result[i]) == "object") {
+                        teamups.push(result[i]);
+                    };
+                };
+                console.log("Teamup results:", teamups);
+
                 $('#comic-search-result').text("Comics found: " + result.length);
 
-
-
                 //This makes the search limited to 3 comics!
-                $.each(result, function (key, value) {
+                /* $.each(result, function (key, value) {
                     return key < 2;
-                });
+                }); */
 
 
                 //console logs our results and if they exist
