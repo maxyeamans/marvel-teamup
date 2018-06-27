@@ -292,12 +292,16 @@ $("document").ready(function () {
         if(thumbnailsHidden === false) {
             $("#get-info").text("Select New Team Up");
             $("#get-info-bottom").hide();
+            $("#searchInput").hide();
+            $(".searchMessage").hide();
             thumbnailsHidden = true;
         } else if (thumbnailsHidden === true) {
             $("#get-info-bottom").show();
             $(".hideOnUp").css("display", "none");
             $(".ebayRow").css("display", "none");
             $("#get-info").text("TEAM UP!");
+            $("#searchInput").show();
+            $(".searchMessage").show();
             thumbnailsHidden = false;
             $(".img-thumbnail").removeClass("active");
             $(".img-thumbnail").addClass("inactive");

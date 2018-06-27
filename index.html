@@ -6,6 +6,8 @@
     <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
     <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Marvel" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Passion+One" rel="stylesheet">
+
 </head>
 
 
@@ -17,14 +19,20 @@
 
     <div class="container">
         <!-- Begin character search -->
-        <div class="row">
-            <div class="col-lg-4">
-                <!-- The form needs an id so it can be reset on submit -->
+        <div id="searchInput" class="row" style="margin-bottom: 40px;">
+            <div class="col-lg-3"></div>
+            <!-- The form needs an id so it can be reset on submit -->
+            <div class="col-lg-6">
                 <form id="input-form">
-                    <input id="userInput" type="text" placeholder="Character Name">
-                    <button id="characterInput" class="btn btn-primary" type="submit">Submit</button>
+                    <input id="userInput" class="text-center" type="text" placeholder="Character Name" style="width: 100%">
+                    <br><br>
+                    <button id="characterInput" class="btn btn-primary" type="submit" style="width: 50%; margin-left: 25%;">Search</button>
                 </form>
             </div>
+            <div class="col-lg-3"></div>
+        </div>
+        <div class="row" style="text-align: center; color: #ff0000c7;">
+            <h5 class="searchMessage" style="margin: 0px auto;">Don't See A Character You're Looking For Try Searching For Them Above!</h5>
         </div>
 
         <!-- begin button display area -->
@@ -34,7 +42,7 @@
         <!-- end button display area -->
 
         <div class="row" style="margin: 40px;">
-            <button type="button" class="btn btn-secondary btn-sm float-right" id="get-info" disabled style="margin: 0px auto; width: 65%;">TEAM UP!</button>
+            <button type="button" class="btn btn-secondary btn-sm" id="get-info" disabled style="margin: 0px auto; width: 65%;">TEAM UP!</button>
         </div>
 
         <!-- begin jason teamup display area -->
