@@ -31,7 +31,7 @@ $("document").ready(function () {
         strCombinedIDs = arrayCombinedIDs.toString();
         console.log(strCombinedIDs);
 
-        var teamupQueryURL = "https://gateway.marvel.com/v1/public/comics?format=comic&formatType=comic&noVariants=true&dateRange=1960-01-01%2C2018-06-21&sharedAppearances=" + strCombinedIDs + "&orderBy=focDate%2ConsaleDate&limit=1&ts=1&apikey=4287eee52c27f292e44137f86910da4a&hash=3f4394a993af3110f684ed8d0f8db35d";
+        var teamupQueryURL = "https://gateway.marvel.com/v1/public/comics?format=comic&formatType=comic&noVariants=true&dateRange=1960-01-01%2C2018-06-21&sharedAppearances=" + strCombinedIDs + "&orderBy=onsaleDate&limit=1&ts=1&apikey=4287eee52c27f292e44137f86910da4a&hash=3f4394a993af3110f684ed8d0f8db35d";
         $.ajax({
             url: teamupQueryURL,
             method: "GET"
@@ -443,7 +443,7 @@ $("document").ready(function () {
         };
 
 
-        var teamupQueryURL = "https://gateway.marvel.com/v1/public/comics?format=comic&formatType=comic&noVariants=true&dateRange=1960-01-01%2C" + strTheDate + "&sharedAppearances=" + strCombinedIDs + "&orderBy=focDate%2ConsaleDate&ts=1&apikey=4287eee52c27f292e44137f86910da4a&hash=3f4394a993af3110f684ed8d0f8db35d";
+        var teamupQueryURL = "https://gateway.marvel.com/v1/public/comics?format=comic&formatType=comic&noVariants=true&dateRange=1960-01-01%2C" + strTheDate + "&sharedAppearances=" + strCombinedIDs + "&orderBy=onsaleDate&ts=1&apikey=4287eee52c27f292e44137f86910da4a&hash=3f4394a993af3110f684ed8d0f8db35d";
         $.ajax({
             url: teamupQueryURL,
             method: "GET",
@@ -457,6 +457,7 @@ $("document").ready(function () {
                 var notFound = function () {
                     // Jason's code for clearing out these divs
                     $('#comic-search-result').text("No Comics Found!");
+                    $('#display-teamup-info').empty();
                     $('.modal-body').text("CANNOT FIND ANY COMICS! SORRY!");
                     $('#noCharacterModal').modal('show');
                     $('#ebayResultsRight').empty();
@@ -510,7 +511,7 @@ $("document").ready(function () {
                     divTitle.text(teamupTitle);
                     // Create the cover
                     var divCover = $("<div>").attr({
-                        class: "comic-display",
+                        class: "comicDisplay",
                         id: "comicCover" + (index + 1)
                     });
                     var imgCover = $("<img>").attr({
@@ -526,7 +527,7 @@ $("document").ready(function () {
             };
         });
 
-        var teamupQueryURL = "https://gateway.marvel.com/v1/public/comics?format=comic&formatType=comic&noVariants=true&dateRange=1960-01-01%2C2018-06-21&sharedAppearances=" + strCombinedIDs + "&orderBy=focDate%2ConsaleDate&limit=1&ts=1&apikey=4287eee52c27f292e44137f86910da4a&hash=3f4394a993af3110f684ed8d0f8db35d";
+        var teamupQueryURL = "https://gateway.marvel.com/v1/public/comics?format=comic&formatType=comic&noVariants=true&dateRange=1960-01-01%2C2018-06-21&sharedAppearances=" + strCombinedIDs + "&orderBy=onsaleDate&limit=1&ts=1&apikey=4287eee52c27f292e44137f86910da4a&hash=3f4394a993af3110f684ed8d0f8db35d";
         $.ajax({
             url: teamupQueryURL,
             method: "GET"
