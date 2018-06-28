@@ -20,13 +20,9 @@ body {
     border-bottom: 2px solid #ff0000c7;
     background-color: black;
     font-family: 'Passion One', sans-serif;
-    letter-spacing: -1px;
     color: white;
 }    
-/* Commenting this out til needed */
-/* #display-teamup{
-    visibility: hidden;
-}     */
+
 #get-info{
     border: 5px solid grey;
     border-left: 5px solid darkgrey;
