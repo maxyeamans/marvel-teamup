@@ -67,12 +67,12 @@ $("document").ready(function () {
             img.attr("src", test.Item[i].GalleryURL);
             img.css("width", "150px");
             img.css("height", "150px");
-            img.css("float", "left");
+            img.css("float", "right");
             img.css("margin-right", "10px");
             img.css("margin-left", "10px");
             var title = $('<h4>');
             title.html(test.Item[i].Title)
-            var link = $("<a>BUY</a>");
+            var link = $("<a>BUY ON</a>");
             link.attr("href", test.Item[i].ViewItemURLForNaturalSearch);
             link.attr("target", "_blank");
             link.addClass("btn");
@@ -80,12 +80,14 @@ $("document").ready(function () {
             var bids = $('<div>');
             bids.html("Total Bids: " + test.Item[i].BidCount + "<br><br>");
             var price = $("<h2>");
-            price.text("$" + test.Item[i].ConvertedCurrentPrice.Value);
+            var string = numeral(test.Item[i].ConvertedCurrentPrice.Value).format('$0,0.00');
+            price.text(string);
             var ebayLogo = $("<img>");
             ebayLogo.attr("src", "assets/images/ebayLogo.png");
-            ebayLogo.css("height", "25px");
-            ebayLogo.css("float", "right");
-            div.prepend(img, title, bids, price, ebayLogo, link);
+            ebayLogo.css("height", "40px");
+            ebayLogo.css("margin-left", "15px");
+            // ebayLogo.css("float", "right");
+            div.prepend(img, title, bids, price, link, ebayLogo);
             target.append(div);
         };
     };
@@ -102,12 +104,12 @@ $("document").ready(function () {
                 img.attr("href", test.SearchResult[0].ItemArray.Item[i].ViewItemURLForNaturalSearch);
                 img.css("width", "150px");
                 img.css("height", "200px");
-                img.css("float", "left");
+                img.css("float", "right");
                 img.css("margin-right", "10px");
                 img.css("margin-left", "10px");
                 var title = $('<h4>');
                 title.html(test.SearchResult[0].ItemArray.Item[i].Title);
-                var link = $("<a>BUY</a>");
+                var link = $("<a>BUY ON</a>");
                 link.attr("href", test.SearchResult[0].ItemArray.Item[i].ViewItemURLForNaturalSearch);
                 link.attr("target", "_blank");
                 link.addClass("btn");
@@ -115,12 +117,14 @@ $("document").ready(function () {
                 var bids = $('<div>');
                 bids.html("Total Bids: " + test.SearchResult[0].ItemArray.Item[i].BidCount + "<br><br>");
                 var price = $("<h2>");
-                price.text("$" + test.SearchResult[0].ItemArray.Item[i].ConvertedCurrentPrice.Value);
+                var string = numeral(test.SearchResult[0].ItemArray.Item[i].ConvertedCurrentPrice.Value).format('$0,0.00');
+                price.text(string);
                 var ebayLogo = $("<img>");
                 ebayLogo.attr("src", "assets/images/ebayLogo.png");
-                ebayLogo.css("height", "25px");
-                ebayLogo.css("float", "right");
-                div.prepend(img, title, bids, price, ebayLogo, link);
+                ebayLogo.css("height", "40px");
+                ebayLogo.css("margin-left", "15px");
+                // ebayLogo.css("float", "right");
+                div.prepend(img, title, bids, price, link, ebayLogo);
                 $('#ebayResults').append(div);
             };
         } else {
@@ -313,47 +317,6 @@ $("document").ready(function () {
         }
         $("#display-button-area").slideToggle();
 
-<<<<<<< HEAD
-        if (thumbnailsHidden === true) {
-
-            // Empty the array and chosen-teamup div if a comparison has already been done
-            arrayCombinedIDs = [];
-            incrementer = 1;
-            $("#chosen-teamup").empty();
-
-            // Iterate through the selected characters
-            $(".active").each(function () {
-
-                // Variables used in the loop
-                var numID = $(this).attr("id-number");
-                var urlThumbnail;
-                var strName;
-
-                // Push the character ID number to the array
-                arrayCombinedIDs.push(numID);
-                console.log(numID);
-                // Set the variables used in the loop
-                urlThumbnail = getThumbnailByID(numID);
-                strName = getNameByID(numID);
-                // Dynamically generate the teamup div
-                let teamupDiv = $("<div>").addClass("col-6");
-                let teamupHeader = $("<h4>").text(strName);
-                teamupHeader.attr({
-                    class: "text-center",
-                    id: "display-name-" + incrementer
-                });
-                let teamupImg = $("<img>");
-                teamupImg.attr({
-                    src: urlThumbnail,
-                    class: "img-fluid",
-                    id: "display-name-" + incrementer
-                });
-                teamupDiv.append(teamupHeader, teamupImg);
-                $("#chosen-teamup").append(teamupDiv);
-
-                incrementer++;
-            });
-=======
         if (thumbnailsHidden === true){
 
         // Empty the array and chosen-teamup div if a comparison has already been done
@@ -395,7 +358,6 @@ $("document").ready(function () {
             incrementer++;
 
         });
->>>>>>> a8650f99756bcef5ed07d66aa18b4dc28595c0b2
 
             // Convert the ID array into a string with the array values separated by just commas
             strCombinedIDs = arrayCombinedIDs.toString();

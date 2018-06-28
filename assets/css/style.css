@@ -85,17 +85,17 @@ body {
 @media screen and (max-width: 991px) {
    /* MEDIUM */
    .ebayComicRow{
-        height: 250px !important;
+        height: 275px !important;
    }
    .ebayCharacterRow{
-        height: 375px !important;
+        height: 400px !important;
     }
 }
 
 @media screen and (max-width: 767px) {
    /* SMALL */
    .ebayComicRow{
-    height: 300px !important;
+    height: 325px !important;
     }
     .ebayCharacterRow{
     height: 500px !important;
@@ -108,6 +108,6 @@ body {
     height: 350px !important;
 }
 .ebayCharacterRow{
-    height: 400px !important;
+    height: 450px !important;
     }
 }
