@@ -1,30 +1,41 @@
 <!DOCTYPE html>
 
 <head>
+    <title>Marvel Teamup</title>
+    
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
         crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
     <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Marvel" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Passion+One" rel="stylesheet">
+
 </head>
 
 
 <body>
 
     <div class="jumbotron">
-        <h3 style="font-size: 50pt; font-weight:bold" class="text-center">MARVEL TEAMUP COMIC SEARCH</h3>
+        <h3 style="font-size: 50pt; font-weight: bold;" class="text-center mt-3">MARVEL TEAMUP</h3>
     </div>
 
     <div class="container">
         <!-- Begin character search -->
-        <div class="row">
-            <div class="col-lg-4">
-                <!-- The form needs an id so it can be reset on submit -->
+        <h4 class="display-5">Select two characters and search for their first comics teamup. Want to own a piece of that historical teamup? Scroll down for eBay listings.</h4>
+        <div id="searchInput" class="row" style="margin-bottom: 40px;">
+            <div class="col-lg-3"></div>
+            <!-- The form needs an id so it can be reset on submit -->
+            <div class="col-lg-6">
                 <form id="input-form">
-                    <input id="userInput" type="text" placeholder="Character Name">
-                    <button id="characterInput" class="btn btn-primary" type="submit">Submit</button>
+                    <input id="userInput" class="text-center" type="text" placeholder="Character Name" style="width: 100%">
+                    <br><br>
+                    <button id="characterInput" class="btn btn-danger" type="submit" style="width: 50%; margin-left: 25%;">Search</button>
                 </form>
             </div>
+            <div class="col-lg-3"></div>
+        </div>
+        <div class="row" style="text-align: center; color: #ff0000c7;">
+            <p class="searchMessage" style="margin: 0px auto;">Don't See A Character You're Looking For? Try Searching For Them Above!</p>
         </div>
 
         <!-- begin button display area -->
@@ -33,6 +44,10 @@
         </div>
         <!-- end button display area -->
 
+        <div class="row" style="margin: 40px;">
+            <button type="button" class="btn btn-secondary btn-sm" id="get-info" disabled style="margin: 0px auto; width: 65%;">TEAM UP!</button>
+        </div>
+
         <!-- begin jason teamup display area -->
         <div class="mt-4" id="display-teamup">
             <div class="card">
@@ -40,10 +55,9 @@
                     <div class="text-center">
                         <h2>Your Chosen Teamup</h2>
                     </div>
-                    <button type="button" class="btn btn-secondary btn-sm float-right" id="get-info" disabled>Get Info</button>
                 </div>
 
-                <div class="card-body">
+                <div id="teamup-card" class="card-body">
                     <div class="row" id="chosen-teamup">
                         <!-- Teamup will be generated here dynamically when the user clicks the "Get Info" button -->
                     </div>
@@ -123,6 +137,8 @@
             </div>
         </div>
 
+        <!-- NUMERAL.JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 
         <!--JQUERY-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

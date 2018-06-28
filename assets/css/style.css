@@ -1,36 +1,36 @@
 html{
-    background: grey;
+    background-color: black;
 }    
-
-/* Is this the font we want to use? */
-/* * {
-    font-family: 'Marvel', sans-serif;
-} */
-
-/* Need to decide on body style */
 body{
-    background: grey;
+    background-color: black;
 }    
 body {
     background-color: black;
     color: white;
-}    
-
-/* Is there a way to get the background pic width to not compress as the screen width goes down? */
+    min-width: 425px;
+}
+    
 .jumbotron{
-    background-image: url("../images/jumbo.jpg");
+    background-image: url(../images/jumbo.jpg);
     background-size: auto;
     background-position: center;
+    background-repeat: no-repeat;
     background-position-y: -235px;
     color: white;
-    border-bottom: 2px solid darkred;
-    background-color: red;
+    border-bottom: 2px solid #ff0000c7;
+    background-color: black;
+    font-family: 'Passion One', sans-serif;
+    color: white;
 }    
 
-/* Commenting this out til needed */
-/* #display-teamup{
-    visibility: hidden;
-}     */
+#get-info{
+    border: 5px solid grey;
+    border-left: 5px solid darkgrey;
+    border-right: 5px solid darkgrey;
+}
+#get-info:hover{
+    box-shadow: 0px 0px 50px 7px;
+}
 
 .ebayRow{
     border-radius: 15px;
@@ -78,29 +78,26 @@ body {
     .ebayComicRow{
         height: 225px !important;
     }
-   
 }
 
 @media screen and (max-width: 991px) {
    /* MEDIUM */
    .ebayComicRow{
-        height: 250px !important;
+        height: 275px !important;
    }
    .ebayCharacterRow{
-        height: 375px !important;
+        height: 400px !important;
     }
-   
 }
 
 @media screen and (max-width: 767px) {
    /* SMALL */
    .ebayComicRow{
-    height: 300px !important;
-}
-.ebayCharacterRow{
+    height: 325px !important;
+    }
+    .ebayCharacterRow{
     height: 500px !important;
-}
-   
+    }
 }
 
 @media screen and (max-width: 575px) {
@@ -109,6 +106,6 @@ body {
     height: 350px !important;
 }
 .ebayCharacterRow{
-    height: 400px !important;
-}
+    height: 450px !important;
+    }
 }
