@@ -63,6 +63,7 @@ $("document").ready(function () {
             div.addClass("ebayCharacterRow");
             div.addClass("ebayRow");
             div.css("height", "300px");
+            div.css("border", "1px solid grey");
             var img = $("<img>");
             img.attr("src", test.Item[i].GalleryURL);
             img.css("width", "150px");
@@ -86,7 +87,6 @@ $("document").ready(function () {
             ebayLogo.attr("src", "assets/images/ebayLogo.png");
             ebayLogo.css("height", "40px");
             ebayLogo.css("margin-left", "15px");
-            // ebayLogo.css("float", "right");
             div.prepend(img, title, bids, price, link, ebayLogo);
             target.append(div);
         };
@@ -99,6 +99,7 @@ $("document").ready(function () {
                 div.addClass("ebayComicRow");
                 div.addClass("ebayRow");
                 div.css("height", "225px");
+                div.css("border", "1px solid grey");
                 var img = $("<img>");
                 img.attr("src", test.SearchResult[0].ItemArray.Item[i].GalleryURL);
                 img.attr("href", test.SearchResult[0].ItemArray.Item[i].ViewItemURLForNaturalSearch);
@@ -123,7 +124,6 @@ $("document").ready(function () {
                 ebayLogo.attr("src", "assets/images/ebayLogo.png");
                 ebayLogo.css("height", "40px");
                 ebayLogo.css("margin-left", "15px");
-                // ebayLogo.css("float", "right");
                 div.prepend(img, title, bids, price, link, ebayLogo);
                 $('#ebayResults').append(div);
             };
@@ -317,47 +317,47 @@ $("document").ready(function () {
         }
         $("#display-button-area").slideToggle();
 
-        if (thumbnailsHidden === true){
+        if (thumbnailsHidden === true) {
 
-        // Empty the array and chosen-teamup div if a comparison has already been done
-        arrayCombinedIDs = [];
-        incrementer = 1;
-        $("#chosen-teamup").empty();
-        $('#teamup-card').velocity("fadeIn");
+            // Empty the array and chosen-teamup div if a comparison has already been done
+            arrayCombinedIDs = [];
+            incrementer = 1;
+            $("#chosen-teamup").empty();
+            $('#teamup-card').velocity("fadeIn");
 
-        // Iterate through the selected characters
-        $(".active").each(function () {
+            // Iterate through the selected characters
+            $(".active").each(function () {
 
-            // Variables used in the loop
-            var numID = $(this).attr("id-number");
-            var urlThumbnail;
-            var strName;
+                // Variables used in the loop
+                var numID = $(this).attr("id-number");
+                var urlThumbnail;
+                var strName;
 
-            // Push the character ID number to the array
-            arrayCombinedIDs.push(numID);
-            console.log(numID);
-            // Set the variables used in the loop
-            urlThumbnail = getThumbnailByID(numID);
-            strName = getNameByID(numID);
-            // Dynamically generate the teamup div
-            let teamupDiv = $("<div>").addClass("col-6");
-            let teamupHeader = $("<h4>").text(strName);
-            teamupHeader.attr({
-                class : "text-center",
-                id : "display-name-" + incrementer
+                // Push the character ID number to the array
+                arrayCombinedIDs.push(numID);
+                console.log(numID);
+                // Set the variables used in the loop
+                urlThumbnail = getThumbnailByID(numID);
+                strName = getNameByID(numID);
+                // Dynamically generate the teamup div
+                let teamupDiv = $("<div>").addClass("col-6");
+                let teamupHeader = $("<h4>").text(strName);
+                teamupHeader.attr({
+                    class: "text-center",
+                    id: "display-name-" + incrementer
+                });
+                let teamupImg = $("<img>");
+                teamupImg.attr({
+                    src: urlThumbnail,
+                    class: "img-fluid",
+                    id: "display-name-" + incrementer
+                });
+                teamupDiv.append(teamupHeader, teamupImg);
+                $("#chosen-teamup").append(teamupDiv);
+
+                incrementer++;
+
             });
-            let teamupImg = $("<img>");
-            teamupImg.attr({
-                src: urlThumbnail,
-                class: "img-fluid",
-                id: "display-name-" + incrementer
-            });
-            teamupDiv.append(teamupHeader, teamupImg);
-            $("#chosen-teamup").append(teamupDiv);
-
-            incrementer++;
-
-        });
 
             // Convert the ID array into a string with the array values separated by just commas
             strCombinedIDs = arrayCombinedIDs.toString();
@@ -471,54 +471,60 @@ $("document").ready(function () {
                 };
             });
 
-            var teamupQueryURL = "https://gateway.marvel.com/v1/public/comics?format=comic&formatType=comic&noVariants=true&dateRange=1960-01-01%2C2018-06-21&sharedAppearances=" + strCombinedIDs + "&orderBy=onsaleDate&limit=1&ts=1&apikey=4287eee52c27f292e44137f86910da4a&hash=3f4394a993af3110f684ed8d0f8db35d";
+            var teamupQueryURL = "https://gateway.marvel.com/v1/public/comics?format=comic&formatType=comic&noVariants=true&dateRange=1960-01-01%2C2018-06-21&sharedAppearances=" + strCombinedIDs + "&orderBy=onsaleDate&limit=3&ts=1&apikey=4287eee52c27f292e44137f86910da4a&hash=3f4394a993af3110f684ed8d0f8db35d";
             $.ajax({
                 url: teamupQueryURL,
                 method: "GET"
             }).then(function (response) {
-                console.log(response);
-                console.log(response.data.results["0"].title);
 
-                // Ebay Additions
-                ebayComic = response.data.results["0"].title;
-                ebayComic = ebayComic.split(" ");
-                console.log(ebayComic);
-                for (var i = 0; i < ebayComic.length; i++) {
-                    ebayComic[i] = ebayComic[i].replace(/[^a-zA-Z0-9 ]/g, "");
-                    if (i < ebayComic.length - 1) {
-                        ebayComic[i] = ebayComic[i] + "+"
+                function ebayComicListing(x) {
+                    console.log(response);
+                    console.log(response.data.results[x].title);
+
+                    // Ebay Additions
+                    ebayComic = response.data.results[x].title;
+                    ebayComic = ebayComic.split(" ");
+                    console.log(ebayComic);
+                    for (var i = 0; i < ebayComic.length; i++) {
+                        ebayComic[i] = ebayComic[i].replace(/[^a-zA-Z0-9 ]/g, "");
+                        if (i < ebayComic.length - 1) {
+                            ebayComic[i] = ebayComic[i] + "+"
+                        };
                     };
+                    ebayComic[ebayComic.length - 2] = "";
+                    ebayComic = ebayComic.join();
+                    ebayComic = ebayComic.replace(/,/g, '');
+                    console.log(ebayComic);
+
+                    console.log(ebayComic);
+                    ebayQueryUrl = "http://open.api.ebay.com/shopping?version=515&callname=FindItemsAdvanced&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebayComic + "&ItemSort=BestMatch&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=1";
+
+                    console.log(ebayQueryUrl);
+                    callAdvanced();
                 };
-                ebayComic[ebayComic.length - 2] = "";
-                ebayComic = ebayComic.join();
-                ebayComic = ebayComic.replace(/,/g, '');
-                console.log(ebayComic);
-
-                console.log(ebayComic);
-                ebayQueryUrl = "http://open.api.ebay.com/shopping?version=515&callname=FindItemsAdvanced&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebayComic + "&ItemSort=BestMatch&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=3";
-
-                console.log(ebayQueryUrl);
-                callAdvanced();
-
+                ebayComicListing(0);
+                ebayComicListing(1);
+                ebayComicListing(2);
+                
                 for (var i = 1; i < 3; i++) {
                     if (i === 1) {
-                        ebayQueryUrlLeft = "http://open.api.ebay.com/shopping?version=515&callname=FindItems&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchOne + "+comics&ItemSort=PricePlusShipping&CategoryID=63&responseencoding=JSON&MaxEntries=3";
+                        ebayQueryUrlLeft = "http://open.api.ebay.com/shopping?version=515&callname=FindItems&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchOne + "+comics&ItemSort=PricePlusShipping&CategoryID=63&responseencoding=JSON&MaxEntries=10";
                         var target = $("#ebayResultsLeft");
                         callSimple(ebayQueryUrlLeft, target);
-                        $("#firstName").html("<h3>" + ebaySearchOne + "</h3>");
+                        $("#firstName").html("<h3>" + ebaySearchOne +"</h3><h5>Collectibles</h5>");
                         $("#firstName").css("text-align", "center");
 
 
                     } else {
-                        ebayQueryUrlRight = "http://open.api.ebay.com/shopping?version=515&callname=FindItems&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchTwo + "+comics&ItemSort=PricePlusShipping&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=3";
+                        ebayQueryUrlRight = "http://open.api.ebay.com/shopping?version=515&callname=FindItems&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchTwo + "+comics&ItemSort=PricePlusShipping&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=10";
                         var target = $("#ebayResultsRight");
                         callSimple(ebayQueryUrlRight, target);
-                        $("#secondName").html("<h3>" + ebaySearchTwo + "</h3>");
+                        $("#secondName").html("<h3>" + ebaySearchTwo + "</h3><h5>Collectibles</h5>");
                         $("#secondName").css("text-align", "center");
                     }
                 };
-            $("#firstName").show();
-            $("#secondName").show();
+                $("#firstName").show();
+                $("#secondName").show();
             });
         };
     });
