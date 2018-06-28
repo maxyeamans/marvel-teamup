@@ -313,6 +313,7 @@ $("document").ready(function () {
         }
         $("#display-button-area").slideToggle();
 
+<<<<<<< HEAD
         if (thumbnailsHidden === true) {
 
             // Empty the array and chosen-teamup div if a comparison has already been done
@@ -352,6 +353,49 @@ $("document").ready(function () {
 
                 incrementer++;
             });
+=======
+        if (thumbnailsHidden === true){
+
+        // Empty the array and chosen-teamup div if a comparison has already been done
+        arrayCombinedIDs = [];
+        incrementer = 1;
+        $("#chosen-teamup").empty();
+        $('#teamup-card').velocity("fadeIn");
+
+        // Iterate through the selected characters
+        $(".active").each(function () {
+
+            // Variables used in the loop
+            var numID = $(this).attr("id-number");
+            var urlThumbnail;
+            var strName;
+
+            // Push the character ID number to the array
+            arrayCombinedIDs.push(numID);
+            console.log(numID);
+            // Set the variables used in the loop
+            urlThumbnail = getThumbnailByID(numID);
+            strName = getNameByID(numID);
+            // Dynamically generate the teamup div
+            let teamupDiv = $("<div>").addClass("col-6");
+            let teamupHeader = $("<h4>").text(strName);
+            teamupHeader.attr({
+                class : "text-center",
+                id : "display-name-" + incrementer
+            });
+            let teamupImg = $("<img>");
+            teamupImg.attr({
+                src: urlThumbnail,
+                class: "img-fluid",
+                id: "display-name-" + incrementer
+            });
+            teamupDiv.append(teamupHeader, teamupImg);
+            $("#chosen-teamup").append(teamupDiv);
+
+            incrementer++;
+
+        });
+>>>>>>> a8650f99756bcef5ed07d66aa18b4dc28595c0b2
 
             // Convert the ID array into a string with the array values separated by just commas
             strCombinedIDs = arrayCombinedIDs.toString();
