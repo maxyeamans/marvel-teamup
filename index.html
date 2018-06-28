@@ -1,129 +1,156 @@
 <!DOCTYPE html>
-<html lang="en">
 
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
+    <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Marvel" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Passion+One" rel="stylesheet">
 
-    </div>
-    <title>Marvel Team Up</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link href="assets/css/style.css" rel="stylesheet" type="text/css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="assets/js/app.js"></script>
 </head>
+
 
 <body>
 
-    <div class="wrapper">
-        <!-- <div class="marvel">MARVEL</div>
-          <div class="studios">TEAM UP</div> -->
-
-        <div class="container-fluid">
-            <div class="jumbotron" style="text-align:center;">
-                <h3>MARVEL TEAM UP</h3>
-                <p>Find out when your favorite Marvel characters first appeared in a comic together</p>
-            </div>
-            <p></p>
-            <p></p>
-        </div>
-
-        <table width="700" border="0" align="center" cellpadding="0" cellspacing="0">
-            <tr>
-            </tr>
-            <tr>
-                <td> </td>
-            </tr>
-            <tr>
-                <td>
-                    <FORM name="doingasearch" id="doingasearch">
-                        <p align="center">
-                            <input name="searchbox" type="text" size="60" />
-                        </p>
-                        <p align="center">
-                            <INPUT type="button" value="Search" onclick="return">
-                        </p>
-                    </FORM>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                </td>
-            </tr>
-        </table>
-
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="card">
-                        <!-- <img class="card-img-top img-fluid" src="//placehold.it/500x200" alt="Card image cap"> -->
-                        <div class="card-block">
-                            <h4 class="card-title">Card title</h4>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="card">
-                        <!-- <img class="card-img-top img-fluid" src="//placehold.it/500x180" alt="Card image cap"> -->
-                        <div class="card-block">
-                            <h4 class="card-title">Card title</h4>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="card">
-                        <!-- <img class="card-img-top img-fluid" src="//placehold.it/500x180" alt="Card image cap"> -->
-                        <div class="card-block">
-                            <h4 class="card-title">Card title</h4>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="card">
-                        <!-- <img class="card-img-top img-fluid" src="//placehold.it/500x180" alt="Card image cap"> -->
-                        <div class="card-block">
-                            <h4 class="card-title">Card title</h4>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-
-    <div class="col-lg-6 col-lg-offset-3 centered">
-        <div style="float: left; border: 1px solid; width: 227px; height: 275px;"></div>
-        <div style="float: right; border: 1px solid;width: 227px; height: 275px;"></div>
-    </div>
-
-    <div class="panel panel-default">
-        <div class="panel-body"></div>
+    <div class="jumbotron">
+        <h3 style="font-size: 50pt; font-weight:bold" class="text-center">MARVEL TEAMUP COMIC SEARCH</h3>
     </div>
 
     <div class="container">
-        <div class="row">
-            <div class="col-sm-2">
-
+        <!-- Begin character search -->
+        <div id="searchInput" class="row" style="margin-bottom: 40px;">
+            <div class="col-lg-3"></div>
+            <!-- The form needs an id so it can be reset on submit -->
+            <div class="col-lg-6">
+                <form id="input-form">
+                    <input id="userInput" class="text-center" type="text" placeholder="Character Name" style="width: 100%">
+                    <br><br>
+                    <button id="characterInput" class="btn btn-primary" type="submit" style="width: 50%; margin-left: 25%;">Search</button>
+                </form>
             </div>
-            <div id="ebayResults" class="col-sm-8">
+            <div class="col-lg-3"></div>
+        </div>
+        <div class="row" style="text-align: center; color: #ff0000c7;">
+            <h5 class="searchMessage" style="margin: 0px auto;">Don't See A Character You're Looking For Try Searching For Them Above!</h5>
+        </div>
 
-            </div>
-            <div class="col-sm-2">
-
-            </div>
+        <!-- begin button display area -->
+        <div class="row" id="display-button-area">
 
         </div>
+        <!-- end button display area -->
+
+        <div class="row" style="margin: 40px;">
+            <button type="button" class="btn btn-secondary btn-sm" id="get-info" disabled style="margin: 0px auto; width: 65%;">TEAM UP!</button>
+        </div>
+
+        <!-- begin jason teamup display area -->
+        <div class="mt-4" id="display-teamup">
+            <div class="card">
+                <div class="card-header">
+                    <div class="text-center">
+                        <h2>Your Chosen Teamup</h2>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="row" id="chosen-teamup">
+                        <!-- Teamup will be generated here dynamically when the user clicks the "Get Info" button -->
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div id="comic-search-result" class="card-header">Your Search Results!</div>
+                    <div id="display-teamup-info" class="row justify-content-around">
+                        <!-- Columns will be generated dynamically -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end teamup display area -->
+
+
+    <!-- Begin Jason's modal -->
+    <div id="noCharacterModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">ERROR!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Jason's modal -->
+
+    <!-- Begin Jeremy's modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="Character Not Found" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Character Not Found</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    This character is not in the Marvel Universe
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Jeremy's modal -->
     </div>
 
+    <!-- EBAY RESULTS WILL BE DISPLAYED BELOW -->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-1">
+            </div>
+            <div id="ebayResults" class="col-sm-10">
+            </div>
+            <div class="col-sm-1">
+            </div>
+        </div>
+        <div class="row">
+            <div id="ebayResultsLeft" class="col-sm-6">
+                <div id="firstName"></div>
+            </div>
+            <div id="ebayResultsRight" class="col-sm-6">
+                <div id="secondName"></div>
+            </div>
+        </div>
 
+
+        <!--JQUERY-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <!--Bootstrap for Modals-->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+        <!--VELOCITY-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/2.0.5/velocity.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/2.0.5/velocity.ui.min.js"></script>
+
+        <!--MOMENT-->
+        <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+
+        <!--CUSTOM SCRIPT-->
+        <script src="assets/js/app.js"></script>
 </body>
 
 </html>
