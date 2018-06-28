@@ -317,6 +317,7 @@ $("document").ready(function () {
         arrayCombinedIDs = [];
         incrementer = 1;
         $("#chosen-teamup").empty();
+        $('#teamup-card').velocity("fadeIn");
 
         // Iterate through the selected characters
         $(".active").each(function () {
@@ -349,6 +350,7 @@ $("document").ready(function () {
             $("#chosen-teamup").append(teamupDiv);
 
             incrementer++;
+
         });
 
         // Convert the ID array into a string with the array values separated by just commas
