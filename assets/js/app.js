@@ -302,9 +302,7 @@ $("document").ready(function () {
         } else if (thumbnailsHidden === true) {
             $("#get-info-bottom").show();
             $(".hideOnUp").css("display", "none");
-            $("#ebayResults").empty();
-            $("#ebayResultsLeft").empty();
-            $("#ebayResultsRight").empty();
+            $(".ebayRow").remove();
             $("#get-info").text("TEAM UP!");
             $("#searchInput").show();
             $(".searchMessage").show();
