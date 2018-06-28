@@ -16,104 +16,18 @@ $("document").ready(function () {
     console.log('Ready');
     var ebayQueryUrl;
     var ebayComic;
-    var ebaySearchComic;
     var ebaySearchOne;
     var ebaySearchTwo;
-    var ebaySearchCount = 0;
+    
     //========================================================================================================
     //Character Selection and TeamupCall
     var arrayCombinedIDs = [];
     var strCombinedIDs;
     let tester = "tester works!";
 
-    $("#get-info").on("click", function (event) {
-
-        strCombinedIDs = arrayCombinedIDs.toString();
-        console.log(strCombinedIDs);
-
-        var teamupQueryURL = "https://gateway.marvel.com/v1/public/comics?format=comic&formatType=comic&noVariants=true&dateRange=1960-01-01%2C2018-06-21&sharedAppearances=" + strCombinedIDs + "&orderBy=onsaleDate&limit=1&ts=1&apikey=4287eee52c27f292e44137f86910da4a&hash=3f4394a993af3110f684ed8d0f8db35d";
-        $.ajax({
-            url: teamupQueryURL,
-            method: "GET"
-        }).then(function (response) {
-            console.log(response);
-            console.log(response.data.results["0"].title);
-
-            // Ebay Additions
-            ebayComic = response.data.results["0"].title;
-            ebayComic = ebayComic.split(" ");
-            console.log(ebayComic);
-            for (let i = 0; i < ebayComic.length; i++) {
-                ebayComic[i] = ebayComic[i].replace(/[^a-zA-Z0-9 ]/g, "");
-                if (i < ebayComic.length - 1) {
-                    ebayComic[i] = ebayComic[i] + "+"
-                };
-            };
-            ebayComic[ebayComic.length - 2] = "";
-            ebayComic = ebayComic.join();
-            ebayComic = ebayComic.replace(/,/g, '');
-            console.log(ebayComic);
-
-
-            console.log(ebayComic);
-            // console.log(ebayComic);
-            // let comicYear = ebayComic[1].substring(1,5);
-            // ebayComic = ebayComic[0]+"+"+comicYear;
-            // ebayComic = ebayComic.trim();
-            // console.log(comicYear);
-            // console.log(ebayComic);//
-            ebayQueryUrl = "http://open.api.ebay.com/shopping?version=515&callname=FindItemsAdvanced&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebayComic + "&ItemSort=BestMatch&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=3";
-
-
-
-
-            //EBAY ADDITIONS
-            // NEED TO DO-----
-            // #1# 
-            // NEED A CALL FOR LISTINGS FOR EACH SPEREATE CHARACTER CHOSEN TO
-            // DISPLAY 2 SEPERATE ROWS OF CHARACTER SPECIFIC LISTINGS
-            //
-            // #3#
-            // REASERCH MORE EBAY API FILTERS TO SEE IF YOU CAN GET
-            // THE BEST QUALITY SEARCH RESULTS YOU CAN
-
-            setTimeout(() => {
-
-
-                // ebayQueryUrl = "http://open.api.ebay.com/shopping?version=515&callname=FindItemsAdvanced&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" +ebayComic+"&ItemSort=BestMatchPlusPrice&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=3";      //ID 1 = collectibles ID 63 = collectibles/comics
-                //PricePlusShipping //BestMatch
-                console.log(ebayQueryUrl);
-                $(".ebayRow").css("visibility", "hidden");
-                $(".ebayRow").addClass("hideMe");
-                callAdvanced();
-
-
-                for (let i = 1; i < 3; i++) {
-                    if (i === 1) {
-                        ebayQueryUrlLeft = "http://open.api.ebay.com/shopping?version=515&callname=FindItems&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchOne + "+comics&ItemSort=PricePlusShipping&CategoryID=63&responseencoding=JSON&MaxEntries=3";
-                        let target = $("#ebayResultsLeft");
-                        callSimple(ebayQueryUrlLeft, target);
-                    } else {
-                        ebayQueryUrlRight = "http://open.api.ebay.com/shopping?version=515&callname=FindItems&appid=ChanceMu-ClassPro-PRD-667ac8c8b-ab199383&QueryKeywords=" + ebaySearchTwo + "+comics&ItemSort=PricePlusShipping&SortOrder=Descending&CategoryID=63&responseencoding=JSON&MaxEntries=3";
-                        let target = $("#ebayResultsRight");
-                        callSimple(ebayQueryUrlRight, target);
-                    }
-                };
-
-                setTimeout(() => {
-                    $(".hideMe").css("display", "none");
-                }, 200);
-
-            }, 1000);
-        });
-    });
+    
     //========================================================================================================  
-    /* let ebaySearchComic;
-    let ebaySearchOne;
-    let ebaySearchTwo;
-    // let ebayQueryUrl;
-    let ebaySearchCount = 0;
-    // let ebayComic; */
+   
 
     function callAdvanced() {
         $.ajax({
@@ -350,7 +264,6 @@ $("document").ready(function () {
             $(this).addClass("inactive");
             console.log(activeElements);
 
-            // TODO: see if these conditionals can be wrapped into the if (activeElements == 2) conditional below.
 
 
         }
@@ -374,8 +287,31 @@ $("document").ready(function () {
     var arrayCombinedIDs = [];
     // This will hold all of the IDs so they can be used in the AJAX call
     var strCombinedIDs;
-
+    var thumbnailsHidden = false;
     $("#get-info").on("click", function (event) {
+        if(thumbnailsHidden === false) {
+            $("#get-info").text("Select New Team Up");
+            $("#get-info-bottom").hide();
+            $("#searchInput").hide();
+            $(".searchMessage").hide();
+            thumbnailsHidden = true;
+        } else if (thumbnailsHidden === true) {
+            $("#get-info-bottom").show();
+            $(".hideOnUp").css("display", "none");
+            $(".ebayRow").css("display", "none");
+            $("#get-info").text("TEAM UP!");
+            $("#searchInput").show();
+            $(".searchMessage").show();
+            thumbnailsHidden = false;
+            $(".img-thumbnail").removeClass("active");
+            $(".img-thumbnail").addClass("inactive");
+            $(".img-thumbnail").css("opacity", "1");
+            activeElements = 0;
+            $("#get-info").prop("disabled", true);
+        }
+        $("#display-button-area").slideToggle();
+
+        if (thumbnailsHidden === true){
 
         // Empty the array and chosen-teamup div if a comparison has already been done
         arrayCombinedIDs = [];
@@ -502,7 +438,7 @@ $("document").ready(function () {
                     var teamupCover = teamupItem.thumbnail.path + "." + teamupItem.thumbnail.extension;
 
                     // Create the column
-                    var divCol = $("<div>").addClass("col-sm-4 col-lg-3");
+                    var divCol = $("<div>").addClass("col-sm-4 col-lg-3 hideOnUp");
                     // Create the title
                     var divTitle = $("<div>").attr({
                         class: "comicTitle text-center",
@@ -584,6 +520,7 @@ $("document").ready(function () {
 
             }, 1000);
         });
+    };
     });
 
 
