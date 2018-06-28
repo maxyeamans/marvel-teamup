@@ -1,13 +1,6 @@
 html{
     background: black;
 }    
-
-/* Is this the font we want to use? */
-/* * {
-    font-family: 'Marvel', sans-serif;
-} */
-
-/* Need to decide on body style */
 body{
     background: black;
 }    
@@ -15,8 +8,6 @@ body {
     background-color: black;
     color: white;
 }    
-
-/* Is there a way to get the background pic width to not compress as the screen width goes down? */
 .jumbotron{
     background-image: url(../images/jumbo.jpg);
     background-size: auto;
@@ -30,12 +21,10 @@ body {
     letter-spacing: -1px;
     color: #ff0000c7;
 }    
-
 /* Commenting this out til needed */
 /* #display-teamup{
     visibility: hidden;
 }     */
-
 #get-info{
     border: 5px solid grey;
     border-left: 5px solid darkgrey;
@@ -91,7 +80,6 @@ body {
     .ebayComicRow{
         height: 225px !important;
     }
-   
 }
 
 @media screen and (max-width: 991px) {
@@ -102,18 +90,16 @@ body {
    .ebayCharacterRow{
         height: 375px !important;
     }
-   
 }
 
 @media screen and (max-width: 767px) {
    /* SMALL */
    .ebayComicRow{
     height: 300px !important;
-}
-.ebayCharacterRow{
+    }
+    .ebayCharacterRow{
     height: 500px !important;
-}
-   
+    }
 }
 
 @media screen and (max-width: 575px) {
@@ -123,5 +109,5 @@ body {
 }
 .ebayCharacterRow{
     height: 400px !important;
-}
+    }
 }
